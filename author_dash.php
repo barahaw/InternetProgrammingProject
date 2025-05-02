@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "internet_programming_pro");
+require_once 'config.php';
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -25,7 +25,6 @@ $result = $conn->query($sql);
 </head>
 <body class="bg-light">
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">News CMS</a>
@@ -39,7 +38,6 @@ $result = $conn->query($sql);
   </div>
 </nav>
 
-<!-- إشعارات -->
 <div class="container mt-4">
   <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success text-center">
@@ -54,7 +52,6 @@ $result = $conn->query($sql);
   <?php endif; ?>
 </div>
 
-<!-- المحتوى الرئيسي -->
 <div class="container mt-3">
   <h3 class="mb-4">أخباري</h3>
 
@@ -90,7 +87,6 @@ $result = $conn->query($sql);
   <?php endif; ?>
 </div>
 
-<!-- Modal تأكيد تسجيل الخروج -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -112,7 +108,6 @@ $result = $conn->query($sql);
   </div>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

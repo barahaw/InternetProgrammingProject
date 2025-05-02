@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "internet_programming_pro");
+require_once 'config.php';
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -19,7 +19,6 @@ if (!isset($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-// لا يسمح بحذف نفسه
 if ($_SESSION['user_id'] == $id) {
     $_SESSION['error_message'] = "لا يمكنك حذف نفسك!";
     header("Location: admin_dash.php");

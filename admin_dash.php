@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "internet_programming_pro");
+require_once 'config.php';
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -36,7 +36,6 @@ $users = $conn->query("SELECT id, name, email, role FROM user_table ORDER BY id 
 </nav>
 
 <div class="container mt-5">
-  <!-- ✅ إشعارات النجاح أو الخطأ -->
   <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
       <?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
@@ -51,7 +50,6 @@ $users = $conn->query("SELECT id, name, email, role FROM user_table ORDER BY id 
     </div>
   <?php endif; ?>
 
-  <!-- ✅ زر إضافة مستخدم جديد -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="text-primary mb-0">إدارة المستخدمين</h3>
     <a href="add_user.php" class="btn btn-success">+ إضافة مستخدم جديد</a>
@@ -93,7 +91,6 @@ $users = $conn->query("SELECT id, name, email, role FROM user_table ORDER BY id 
   <?php endif; ?>
 </div>
 
-<!-- Modal تأكيد تسجيل الخروج -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

@@ -1,12 +1,11 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "internet_programming_pro");
+require_once 'config.php';
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// عند الضغط على زر الدخول
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -22,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_role'] = $user['Role'];
         $_SESSION['success_message'] = "تم تسجيل الدخول بنجاح!";
 
-        // توجيه حسب الدور
         switch ($user['Role']) {
             case 'admin':
                 header("Location: admin_dash.php");

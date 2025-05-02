@@ -1,7 +1,7 @@
-// approve_news.php
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "internet_programming_pro");
+require_once 'config.php';
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
