@@ -2,9 +2,6 @@
 session_start();
 require_once 'config.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $sql = "SELECT news_table.Id, news_table.Title, news_table.Date_Posted, news_table.Status,
                news_table.Image, news_table.Body, category_table.name AS category_name, user_table.name AS author_name
@@ -27,8 +24,10 @@ $result = $conn->query($sql);
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">News CMS</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
+  <a class="navbar-brand" href="#">
+    <img src="assets/news .png" alt="" class="navbar-toggler-icon">
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" href="#">Editor Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">تسجيل الخروج</a></li>

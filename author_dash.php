@@ -2,9 +2,7 @@
 session_start();
 require_once 'config.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
 
 $author_id = isset($_SESSION['author_id']) ? $_SESSION['author_id'] : 0;
 
@@ -71,10 +69,12 @@ $result = $conn->query($sql);
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">News CMS</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
+  <a class="navbar-brand" href="#">
+    <img src="assets/news .png" alt="" class="navbar-toggler-icon">
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link active" href="author_dash.php">الرئيسية</a></li>
+        <li class="nav-item"><a class="nav-link active" href="author_dash.php">dashbord</a></li>
         <li class="nav-item"><a class="nav-link" href="add_news.php">إضافة خبر</a></li>
         <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSidebar(event)">مقالاتي</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">تسجيل الخروج</a></li>

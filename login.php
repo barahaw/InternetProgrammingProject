@@ -2,21 +2,18 @@
 session_start();
 require_once 'config.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM user_table WHERE Email = ? AND Password = ?");
-    $stmt->bind_param("ss", $email, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+    $sql = "SELECT * FROM user_table WHERE Email = '$email' AND Password = '$password'";
+    $result = $conn->query($sql);
 
-    if ($user) {
+       if ($result && $result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
         $_SESSION['user_id'] = $user['Id'];
         $_SESSION['user_role'] = $user['Role'];
         $_SESSION['success_message'] = "تم تسجيل الدخول بنجاح!";

@@ -2,10 +2,6 @@
 session_start();
 require_once 'config.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 $categoryResult = $conn->query("SELECT * FROM category_table");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -23,13 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     }
 
-    $stmt = $conn->prepare("INSERT INTO news_table (title, body, image, category_id, author_id, status) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssdis", $title, $body, $image_name, $category_id, $author_id, $status);
-    if ($stmt->execute()) {
-        $_SESSION['success_message'] = "تم إضافة الخبر بنجاح!";
-    } else {
-        $_SESSION['error_message'] = "حدث خطأ أثناء الإضافة.";
-    }
+    $sql = "INSERT INTO news_table (title, body, image, category_id, author_id, status) VALUES( '$title', '$body', '$image_name', '$category_id', '$author_id', '$status')";
+        
+    if ($conn->query($sql)) {
+      $_SESSION['success_message'] = "تم اضافة الخبر بنجاح.";
+  } else {
+      $_SESSION['error_message'] = "فشل في اضافة الخبر : " . $conn->error;
+  }
     header("Location: add_news.php");
     exit;
     
@@ -56,8 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">News CMS</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
+  <a class="navbar-brand" href="#">
+    <img src="assets/news .png" alt="" class="navbar-toggler-icon">
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="author_dash.php">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link active" href="add_news.php">إضافة خبر</a></li>

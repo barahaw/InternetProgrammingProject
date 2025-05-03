@@ -2,9 +2,6 @@
 session_start();
 require_once 'config.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: login.php");
@@ -24,10 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    $stmt = $conn->prepare("UPDATE user_table SET name = ?, email = ?, role = ? WHERE id = ?");
-    $stmt->bind_param("sssi", $name, $email, $role, $id);
+    $sql = "UPDATE user_table SET name = '$name', email = '$email' , role = '$role' WHERE id = '$id'";
 
-    if ($stmt->execute()) {
+    if ($conn->query($sql)) {
         $_SESSION['success_message'] = "تم تعديل بيانات المستخدم بنجاح.";
     } else {
         $_SESSION['error_message'] = "حدث خطأ أثناء التعديل.";

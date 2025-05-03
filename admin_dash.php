@@ -2,9 +2,6 @@
 session_start();
 require_once 'config.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: login.php");
@@ -23,12 +20,17 @@ $users = $conn->query("SELECT id, name, email, role FROM user_table ORDER BY id 
 </head>
 <body class="bg-light">
 
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">News CMS</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
+  <a class="navbar-brand" href="#">
+    <img src="assets/news .png" alt="" class="navbar-toggler-icon">
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" href="#">Admin Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="add_user.php">إضافة خبر</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">تسجيل الخروج</a></li>
       </ul>
     </div>

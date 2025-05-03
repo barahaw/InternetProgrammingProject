@@ -1,9 +1,7 @@
 <?php
 session_start();
 require_once 'config.php';
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = intval($_POST['Id']);
@@ -19,21 +17,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $target_file = $target_dir . $image_name;
 
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $sql = "UPDATE news_table SET Title = ?, Body = ?, Category_Id = ?, image = ? WHERE Id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssisi", $title, $body, $category_id, $image_name, $id);
+            $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id', image = '$image_name' WHERE Id = '$id'";
         } else {
             $_SESSION['error_message'] = "فشل في رفع الصورة.";
             header("Location: edit_news.php?id=$id");
             exit;
         }
     } else {
-        $sql = "UPDATE news_table SET Title = ?, Body = ?, Category_Id = ? WHERE Id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssii", $title, $body, $category_id, $id);
+        $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id' WHERE Id = '$id'";
     }
 
-    if (isset($stmt) && $stmt->execute()) {
+    if ($conn->query($sql)) {
         $_SESSION['success_message'] = "تم تعديل الخبر بنجاح!";
     } else {
         $_SESSION['error_message'] = "حدث خطأ أثناء التعديل.";

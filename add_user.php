@@ -2,9 +2,6 @@
 session_start();
 require_once 'config.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: login.php");
@@ -15,18 +12,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name  = $_POST['name'];
     $email = $_POST['email'];
     $role  = $_POST['role'];
-    $password = $_POST['password']; 
+    $password =$_POST['password']; 
 
-    $stmt = $conn->prepare("INSERT INTO user_table (name, email, password, role) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $name, $email, $password, $role);
-
-    if ($stmt->execute()) {
-        $_SESSION['success_message'] = "تم إنشاء المستخدم بنجاح.";
-        header("Location: admin_dash.php");
-        exit;
-    } else {
-        $_SESSION['error_message'] = "حدث خطأ أثناء إضافة المستخدم.";
+    $sql = "INSERT INTO user_table (name, email, password, role) VALUES('$name', '$email', '$password', '$role')";
+    
+    //from chatgpt 
+    if ($conn->query($sql)) {
+     $_SESSION['success_message'] = "تم إنشاء المستخدم بنجاح.";
+    } 
+    else {
+      $_SESSION['error_message'] = "فشل في إنشاء المستخدم: " . $conn->error;
     }
+    header("Location: admin_dash.php");
+    exit;
+   
 }
 ?>
 
@@ -38,6 +37,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+  <a class="navbar-brand" href="#">
+    <img src="assets/news .png" alt="" class="navbar-toggler-icon">
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="admin_dash.php">Admin Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">تسجيل الخروج</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <div class="container mt-5">
   <div class="card shadow">
