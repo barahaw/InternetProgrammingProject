@@ -22,8 +22,52 @@ $result = $conn->query($sql);
   <meta charset="UTF-8">
   <title>لوحة الكاتب</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 250px;
+      background-color: #343a40;
+      color: white;
+      padding-top: 60px;
+      transition: right 0.3s;
+      z-index: 1050;
+      overflow-y: auto;
+    }
+    .sidebar.collapsed {
+      right: -250px;
+    }
+    .sidebar a {
+      color: white;
+      padding: 10px 20px;
+      display: block;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+    .sidebar .close-sidebar {
+      display: block;
+      text-align: center;
+      background-color: #dc3545;
+      color: white;
+      margin: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .sidebar .close-sidebar:hover {
+      background-color: #bb2d3b;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body class="bg-light" onclick="autoCollapseSidebar(event)">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
@@ -32,11 +76,29 @@ $result = $conn->query($sql);
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" href="author_dash.php">الرئيسية</a></li>
         <li class="nav-item"><a class="nav-link" href="add_news.php">إضافة خبر</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="toggleSidebar(event)">مقالاتي</a></li>
         <li class="nav-item"><a class="nav-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">تسجيل الخروج</a></li>
       </ul>
     </div>
   </div>
 </nav>
+
+<div class="sidebar collapsed" id="sidebar">
+  <h5 class="text-center">مقالاتي</h5>
+  <hr>
+  <?php 
+  $sideSql = "SELECT id, title, status FROM news_table WHERE author_id = $author_id ORDER BY date_posted DESC";
+  $sideRes = $conn->query($sideSql);
+  while ($row = $sideRes->fetch_assoc()): ?>
+    <a href="edit_news.php?id=<?= $row['id'] ?>">
+      <?= htmlspecialchars($row['title']) ?>
+      <span class="badge bg-<?= $row['status'] == 'approved' ? 'success' : 'warning' ?> float-end">
+        <?= $row['status'] == 'approved' ? 'تمت الموافقة' : 'بانتظار' ?>
+      </span>
+    </a>
+  <?php endwhile; ?>
+  <a href="#" class="close-sidebar" onclick="toggleSidebar(event)">إغلاق الشريط</a>
+</div>
 
 <div class="container mt-4">
   <?php if (isset($_SESSION['success_message'])): ?>
@@ -53,7 +115,10 @@ $result = $conn->query($sql);
 </div>
 
 <div class="container mt-3">
-  <h3 class="mb-4">أخباري</h3>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">أخباري</h3>
+    <a href="add_news.php" class="btn btn-success">+ إضافة مقال</a>
+  </div>
 
   <?php if ($result->num_rows > 0): ?>
     <div class="row">
@@ -108,6 +173,19 @@ $result = $conn->query($sql);
   </div>
 </div>
 
+<script>
+  function toggleSidebar(event) {
+    event.stopPropagation();
+    document.getElementById('sidebar').classList.toggle('collapsed');
+  }
+
+  function autoCollapseSidebar(event) {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar.classList.contains('collapsed') && !sidebar.contains(event.target)) {
+      sidebar.classList.add('collapsed');
+    }
+  }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

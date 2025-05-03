@@ -9,3 +9,4 @@ $_SESSION['success_message'] = "تم تسجيل الخروج بنجاح.";
 
 header("Location: login.php");
 exit;
+?>
