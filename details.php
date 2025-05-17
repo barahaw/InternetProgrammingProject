@@ -304,32 +304,34 @@ echo '<h6 class="fw-bold d-inline-block  border-3  border-bottom  border-primary
                 const list = document.getElementById('sidebar-news-list');
                 if (list) list.innerHTML = renderSidebarNews(data, currentNewsCategory);
             });
-        function loadDynamicAd() {
+        function fetchAndDisplayAd() {
+            const adPlaceholder = document.getElementById('dynamic-ad-placeholder');
+            if (!adPlaceholder) {
+                return;
+            }
             fetch('get_random_ad.php')
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
+                        throw new Error('Network response was not ok: ' + response.statusText);
                     }
                     return response.json();
                 })
-                .then(ad_data => {
-                    const adContainer = document.getElementById('dynamic-ad-container');
-                    if (adContainer) {
-                        if (ad_data && ad_data.image) {
-                            adContainer.innerHTML = `<img src="${ad_data.image}" alt="${ad_data.ad_text || 'Advertisement'}" class="img-fluid" width="250">`;
-                        } else {
-                            console.log('No ad data received or ad has no image.');
+                .then(data => {
+                    if (data && data.image) {
+                        let adHtml = `<img src="${data.image}" alt="${data.ad_text || 'Advertisement'}" class="img-fluid" width="250">`;
+                        if (data.ad_text) {
+                            adHtml += `<div class="mt-2 text-secondary small text-center">${data.ad_text}</div>`;
                         }
+                        adPlaceholder.innerHTML = adHtml;
+                    } else {
+                        adPlaceholder.innerHTML = '<img src="assets/ad.png" alt="advertise" class="img-fluid" width="250">';
                     }
                 })
                 .catch(error => {
-                    console.error('Error fetching dynamic ad:', error);
-                    const adContainer = document.getElementById('dynamic-ad-container');
-                    if (adContainer) {
-                        adContainer.innerHTML = '<img src="assets/ad.png" alt="advertise" class="img-fluid" width="250">';
-                    }
+                    adPlaceholder.innerHTML = '<img src="assets/ad.png" alt="advertise" class="img-fluid" width="250">';
                 });
         }
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayAd);
         function renderAlsoRead(data) {
             if (!Array.isArray(data)) return '';
             return data.slice(0, 3).map(item => `
@@ -432,27 +434,6 @@ echo '<h6 class="fw-bold d-inline-block  border-3  border-bottom  border-primary
                     document.getElementById('news-title').textContent = 'تعذر تحميل الخبر من قاعدة البيانات.';
                 });
         }
-        function fetchAndDisplayAd() {
-            const adPlaceholder = document.getElementById('dynamic-ad-placeholder');
-            if (!adPlaceholder) {
-                return;
-            }
-            fetch('get_random_ad.php')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data && data.image) {
-                        adPlaceholder.innerHTML = `<img src="${data.image}" alt="${data.ad_text || 'Advertisement'}" class="img-fluid" width="250">`;
-                    }
-                })
-                .catch(error => {
-                });
-        }
-        document.addEventListener('DOMContentLoaded', fetchAndDisplayAd);
         function loadComments(newsId) {
             fetch('comments.php?news_id=' + newsId)
                 .then(res => res.text())
