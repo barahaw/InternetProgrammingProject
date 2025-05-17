@@ -7,10 +7,8 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
-// Handle Users
 $users = $conn->query("SELECT id, name, email, role FROM user_table ORDER BY id ASC");
 
-// Handle Ads: Add/Edit/Delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ad_action'])) {
     if ($_POST['ad_action'] === 'save_ad') {
         $ad_text = trim($_POST['ad_text']);
@@ -38,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ad_action'])) {
 
             if (!in_array($image_extension, array_keys($allowed_types)) || !in_array($file_mime_type, $allowed_types)) {
                 $_SESSION['error_message'] = 'نوع الملف غير صالح. الأنواع المسموح بها: JPG, PNG, GIF.';
-            } elseif ($_FILES['ad_image_file']['size'] > 2 * 1024 * 1024) { // Max 2MB
+            } elseif ($_FILES['ad_image_file']['size'] > 2 * 1024 * 1024) {
                 $_SESSION['error_message'] = 'حجم الملف كبير جداً. الحد الأقصى 2 ميغابايت.';
             } elseif (move_uploaded_file($_FILES['ad_image_file']['tmp_name'], $target_file_path)) {
                 $ad_image_path_to_store = $target_file_path;
@@ -50,16 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ad_action'])) {
 
         if (empty($ad_text)) {
             $_SESSION['error_message'] = 'نص الإعلان مطلوب.';
-        } elseif ($ad_id == 0 && !$new_image_uploaded && !isset($_SESSION['error_message'])) { // New ad requires an image, unless an upload error already occurred
+        } elseif ($ad_id == 0 && !$new_image_uploaded && !isset($_SESSION['error_message'])) {
             $_SESSION['error_message'] = 'صورة الإعلان مطلوبة عند إضافة إعلان جديد.';
         } elseif (isset($_SESSION['error_message'])) {
-            // An error message is already set (e.g. from file upload validation), do nothing more here.
         } else {
-            // Proceed with DB operation
-            if ($ad_id > 0) { // Editing existing ad
+            if ($ad_id > 0) {
                 $current_image_path = null;
                 if ($new_image_uploaded) {
-                    // Fetch old image to delete it
                     $stmt_old_img = $conn->prepare("SELECT image FROM ads WHERE id = ?");
                     $stmt_old_img->bind_param("i", $ad_id);
                     $stmt_old_img->execute();
@@ -71,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ad_action'])) {
 
                     $stmt = $conn->prepare("UPDATE ads SET ad_text=?, image=? WHERE id=?");
                     $stmt->bind_param("ssi", $ad_text, $ad_image_path_to_store, $ad_id);
-                } else { // No new image, just update text
+                } else {
                     $stmt = $conn->prepare("UPDATE ads SET ad_text=? WHERE id=?");
                     $stmt->bind_param("si", $ad_text, $ad_id);
                 }
@@ -79,20 +74,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ad_action'])) {
                 if (isset($stmt)) {
                     if ($stmt->execute()) {
                         $_SESSION['success_message'] = 'تم تحديث الإعلان بنجاح.';
-                        // If new image was uploaded and old one existed, delete old one
                         if ($new_image_uploaded && !empty($current_image_path) && file_exists($current_image_path) && $current_image_path !== $ad_image_path_to_store) {
                             unlink($current_image_path);
                         }
                     } else {
                         $_SESSION['error_message'] = 'خطأ في تحديث الإعلان: ' . $conn->error;
-                        // If upload was successful but DB failed, delete the newly uploaded file
                         if ($new_image_uploaded && file_exists($ad_image_path_to_store)) {
                             unlink($ad_image_path_to_store);
                         }
                     }
                     $stmt->close();
                 }
-            } else { // Adding new ad
+            } else {
                 if ($new_image_uploaded) { 
                     $stmt = $conn->prepare("INSERT INTO ads (ad_text, image) VALUES (?, ?)");
                     $stmt->bind_param("ss", $ad_text, $ad_image_path_to_store);
@@ -100,18 +93,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ad_action'])) {
                         $_SESSION['success_message'] = 'تم إضافة الإعلان بنجاح.';
                     } else {
                         $_SESSION['error_message'] = 'خطأ في إضافة الإعلان: ' . $conn->error;
-                        // If upload was successful but DB failed, delete the uploaded file
                         if (file_exists($ad_image_path_to_store)) {
                             unlink($ad_image_path_to_store);
                         }
                     }
                     $stmt->close();
-                } else if (!isset($_SESSION['error_message'])) { // Should have been caught earlier
+                } else if (!isset($_SESSION['error_message'])) {
                      $_SESSION['error_message'] = 'خطأ غير متوقع: صورة الإعلان مفقودة للإعلان الجديد.';
                 }
             }
         }
-    } // End save_ad
+    }
     header('Location: admin_dash.php#ads-management');
     exit;
 }
@@ -119,7 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ad_action'])) {
 if (isset($_GET['delete_ad'])) {
     $ad_id_to_delete = intval($_GET['delete_ad']);
     
-    // First, get the image path to delete the file
     $stmt_select = $conn->prepare("SELECT image FROM ads WHERE id = ?");
     $stmt_select->bind_param("i", $ad_id_to_delete);
     $stmt_select->execute();
@@ -127,12 +118,10 @@ if (isset($_GET['delete_ad'])) {
     $ad_data = $result->fetch_assoc();
     $stmt_select->close();
 
-    // Then, delete the ad record
     $stmt = $conn->prepare("DELETE FROM ads WHERE id=?");
     $stmt->bind_param("i", $ad_id_to_delete);
     if ($stmt->execute()) {
         $_SESSION['success_message'] = 'تم حذف الإعلان بنجاح.';
-        // If ad record deleted successfully, delete the image file
         if ($ad_data && !empty($ad_data['image']) && file_exists($ad_data['image'])) {
             unlink($ad_data['image']);
         }
@@ -274,7 +263,7 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
                         <td><?= htmlspecialchars($ad['ad_text']) ?></td>
                         <td>
                             <?php if (!empty($ad['image']) && file_exists($ad['image'])): ?>
-                                <img src="<?= htmlspecialchars($ad['image']) ?>?t=<?= time() // Cache buster ?>" alt="<?= htmlspecialchars($ad['ad_text']) ?>" style="max-width: 100px; max-height: 50px; border:1px solid #ddd;">
+                                <img src="<?= htmlspecialchars($ad['image']) ?>?t=<?= time() ?>" alt="<?= htmlspecialchars($ad['ad_text']) ?>" style="max-width: 100px; max-height: 50px; border:1px solid #ddd;">
                             <?php else: ?>
                                 <small>لا توجد صورة</small>
                             <?php endif; ?>
@@ -325,7 +314,7 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
         const previewDiv = document.getElementById('current_ad_image_preview');
         const fileInput = document.getElementById('ad_image_file_field');
         
-        fileInput.value = ''; // Clear file input
+        fileInput.value = '';
 
         if (currentImageUrl) {
             previewDiv.innerHTML = '<p class="mb-1">الصورة الحالية:</p><img src="' + currentImageUrl + '?t=' + new Date().getTime() + '" alt="Ad Image" style="max-width: 100px; max-height: 100px; display: block; margin-bottom: 5px; border:1px solid #ddd;"> <small>' + currentImageUrl.split('/').pop() + '</small>';
@@ -333,7 +322,7 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
             previewDiv.innerHTML = '<p>لا توجد صورة حالية.</p>';
         }
         
-        window.location.hash = '#ads-management'; // Scroll to the form
+        window.location.hash = '#ads-management';
         document.getElementById('ad_text_field').focus();
     }
 
@@ -345,7 +334,6 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
         document.getElementById('ad_text_field').focus();
     }
 
-    // If URL has hash #ads-management, scroll to it after page load
     if(window.location.hash === '#ads-management') {
         const el = document.getElementById('ads-management');
         if (el) {

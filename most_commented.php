@@ -1,6 +1,5 @@
 <?php
 require_once 'config.php';
-// Get top 5 most commented news
 $sql = "SELECT n.id, n.title, COUNT(c.id) as comment_count FROM news_table n LEFT JOIN comments c ON n.id = c.news_id GROUP BY n.id, n.title ORDER BY comment_count DESC LIMIT 5";
 $result = $conn->query($sql);
 if ($result && $result->num_rows > 0) {

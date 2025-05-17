@@ -10,7 +10,6 @@ if (!$category) {
     exit;
 }
 
-// Fetch news for the given category
 $stmt = $conn->prepare("SELECT n.id, n.title, LEFT(n.body, 120) AS excerpt, n.body, n.image, c.name as category FROM news_table n LEFT JOIN category_table c ON n.category_id = c.id WHERE c.name = ? ORDER BY n.date_posted DESC LIMIT 6");
 $stmt->bind_param('s', $category);
 $stmt->execute();
@@ -21,7 +20,6 @@ while ($row = $result->fetch_assoc()) {
 }
 
 if ($full) {
-    // For main/side layout (first = main, next 4 = side)
     $main = isset($news[0]) ? [
         'id' => $news[0]['id'],
         'title' => $news[0]['title'],
@@ -46,6 +44,5 @@ if ($full) {
         'side' => $side
     ], JSON_UNESCAPED_UNICODE);
 } else {
-    // Flat list for simple sections
     echo json_encode($news, JSON_UNESCAPED_UNICODE);
 }

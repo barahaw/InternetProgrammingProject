@@ -7,14 +7,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="assets/news .png" type="image/x-icon">
-
-
     <title>Details</title>
     <style>
         nav {
             background-color: #0f1432;
         }
-
         .navbar-nav .nav-link {
             color: white !important;
         }
@@ -61,7 +58,6 @@
         </div>
     </nav>
 
-
     <main class="container mt-2">
         <section class="row">
             <div class="row">
@@ -99,8 +95,8 @@
             </div>
             <div class="col">
             <?php
-            echo '<h6 class="fw-bold d-inline-block  border-3  border-bottom  border-primary mb-0  text-muted" id="more-from-category-heading" style="display:none"></h6>';
-            ?>
+echo '<h6 class="fw-bold d-inline-block  border-3  border-bottom  border-primary mb-0  text-muted" id="more-from-category-heading" style="display:none"></h6>';
+?>
             <script>
                 function updateMoreFromCategoryHeading(category) {
                     var heading = document.getElementById('more-from-category-heading');
@@ -123,7 +119,6 @@
                 </div>
 
         </section>
-        <!-- Comments Section -->
         <section class="row mt-4">
             <div class="col-md-8">
                 <div class="card mb-3">
@@ -228,27 +223,21 @@
     <script>
         let currentNewsCategory = null;
         let currentNewsId = null;
-
-        // Font size adjustment
         const newsBody = document.getElementById('news-body');
         const increaseFontBtn = document.getElementById('increase-font');
         const decreaseFontBtn = document.getElementById('decrease-font');
-        let currentFontSize = 16; // Initial font size in pixels
-        const fontSizeStep = 2; // Pixels to increase/decrease by
-        const minFontSize = 10; // Minimum font size
-        const maxFontSize = 30; // Maximum font size
-
+        let currentFontSize = 16;
+        const fontSizeStep = 2;
+        const minFontSize = 10;
+        const maxFontSize = 30;
         if (newsBody && increaseFontBtn && decreaseFontBtn) {
-            // Set initial font size
             newsBody.style.fontSize = currentFontSize + 'px';
-
             increaseFontBtn.addEventListener('click', () => {
                 if (currentFontSize < maxFontSize) {
                     currentFontSize += fontSizeStep;
                     newsBody.style.fontSize = currentFontSize + 'px';
                 }
             });
-
             decreaseFontBtn.addEventListener('click', () => {
                 if (currentFontSize > minFontSize) {
                     currentFontSize -= fontSizeStep;
@@ -256,8 +245,6 @@
                 }
             });
         }
-
-        // AJAX: Load Most Read (sidebar)
         function renderMostReadSidebar(data) {
             let listHtml = data.list.map((item, idx) => `
                 <li class="py-2 border-bottom">
@@ -299,8 +286,6 @@
                     sidebar.innerHTML = renderMostReadSidebar(data);
                 }
             });
-
-      
         function renderSidebarNews(data) {
             return data.slice(0,3).map(item => `
                 <li class="py-2 border-bottom">
@@ -315,7 +300,6 @@
                 const list = document.getElementById('sidebar-news-list');
         if (list) list.innerHTML = renderSidebarNews(data);
             });
-
         function loadDynamicAd() {
             fetch('get_random_ad.php')
                 .then(response => {
@@ -342,9 +326,8 @@
                     }
                 });
         }
-
         function renderAlsoRead(data) {
-            if (!Array.isArray(data)) return ''; // Guard against non-array data
+            if (!Array.isArray(data)) return '';
             return data.slice(0, 3).map(item => `
                 <li class="py-2 border-bottom d-flex align-items-center">
                     <a href="details.php?id=${item.id}" class="text-decoration-none text-dark">
@@ -353,7 +336,6 @@
                 </li>
             `).join('');
         }
-
         function renderRelatedTopics(data) {
             return data.map(item => `
                 <div class="col-12">
@@ -369,7 +351,6 @@
                 </div>
             `).join('');
         }
-
         function renderMainNews(news) {
             if (news.error) {
                 document.getElementById('news-title').textContent = 'الخبر غير موجود أو حدث خطأ.';
@@ -404,25 +385,21 @@
                 : (news.body ? news.body.split(/\s+/).slice(0, 10).join(' ') + (news.body.split(/\s+/).length > 10 ? '...' : '') : '');
             document.getElementById('news-image-caption').textContent = caption;
             document.getElementById('news-body').innerHTML = `<p class="text-muted">${news.body || ''}</p>`;
-            
             if (typeof updateMoreFromCategoryHeading === 'function') {
                 updateMoreFromCategoryHeading(news.category);
             }
-
             if (currentNewsCategory) {
                 fetch(`related_news.php?category=${encodeURIComponent(currentNewsCategory)}&exclude=${currentNewsId}`)
                     .then(res => res.json())
                     .then(data => {
                         const relatedTopics = document.getElementById('related-topics-list');
                         if (relatedTopics) relatedTopics.innerHTML = renderRelatedTopics(data);
-
                         const alsoReadList = document.getElementById('related-news-list');
                         if (alsoReadList) {
                             alsoReadList.innerHTML = renderAlsoRead(data);
                         }
                     })
                     .catch(error => {
-                        console.error('Error fetching related content:', error);
                         const relatedTopics = document.getElementById('related-topics-list');
                         if (relatedTopics) relatedTopics.innerHTML = '<div class="col-12 text-muted">تعذر تحميل الموضوعات ذات الصلة.</div>';
                         const alsoReadList = document.getElementById('related-news-list');
@@ -445,14 +422,11 @@
                     document.getElementById('news-title').textContent = 'تعذر تحميل الخبر من قاعدة البيانات.';
                 });
         }
-
         function fetchAndDisplayAd() {
             const adPlaceholder = document.getElementById('dynamic-ad-placeholder');
             if (!adPlaceholder) {
-                console.error('Ad placeholder div #dynamic-ad-placeholder not found.');
                 return;
             }
-
             fetch('get_random_ad.php')
                 .then(response => {
                     if (!response.ok) {
@@ -463,18 +437,12 @@
                 .then(data => {
                     if (data && data.image) {
                         adPlaceholder.innerHTML = `<img src="${data.image}" alt="${data.ad_text || 'Advertisement'}" class="img-fluid" width="250">`;
-                    } else {
-                        console.log('No ad data received or ad has no image. Placeholder will be used.');
                     }
                 })
                 .catch(error => {
-                    console.error('Failed to fetch or display ad:', error);
                 });
         }
-
         document.addEventListener('DOMContentLoaded', fetchAndDisplayAd);
-
-        // Comments Section Logic
         function loadComments(newsId) {
             fetch('comments.php?news_id=' + newsId)
                 .then(res => res.text())
@@ -506,14 +474,12 @@
                 });
             }, { once: true });
         }
-        // After loading news details, setup comments
         function afterNewsLoaded(news) {
             if (news && news.id) {
                 loadComments(news.id);
                 setupCommentForm(news.id);
             }
         }
-        // Patch renderMainNews to call afterNewsLoaded
         const origRenderMainNews = renderMainNews;
         renderMainNews = function(news) {
             origRenderMainNews(news);
