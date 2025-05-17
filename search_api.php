@@ -4,7 +4,6 @@ header('Content-Type: application/json; charset=utf-8');
 $q = isset($_GET['q']) ? trim($_GET['q']) : '';
 $newsArr = [];
 if ($q !== '') {
-    // Join with category_table to search in category name as well
     $sql = "SELECT n.Id, n.Title, LEFT(n.Body, 120) AS excerpt, n.Image FROM news_table n LEFT JOIN category_table c ON n.Category_Id = c.Id WHERE n.Title LIKE ? OR n.Body LIKE ? OR n.keywords LIKE ? OR c.Name LIKE ? ORDER BY n.Date_Posted DESC";
     $like = "%$q%";
     $stmt = $conn->prepare($sql);

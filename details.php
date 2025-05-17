@@ -286,19 +286,23 @@ echo '<h6 class="fw-bold d-inline-block  border-3  border-bottom  border-primary
                     sidebar.innerHTML = renderMostReadSidebar(data);
                 }
             });
-        function renderSidebarNews(data) {
-            return data.slice(0,3).map(item => `
+        function renderSidebarNews(data, category = null) {
+            let normalizedCategory = category ? category.trim().toLowerCase() : null;
+            let filtered = normalizedCategory
+                ? data.filter(item => (item.category || '').trim().toLowerCase() === normalizedCategory)
+                : data;
+            return filtered.slice(0, 3).map(item => `
                 <li class="py-2 border-bottom">
                     <i class="bi bi-pentagon-fill" style="color:#8F87F1; font-size: 10px;"></i>
                     <a href="details.php?id=${item.id}" class="text-decoration-none text-dark">${item.title}</a>
                 </li>
-            `).join('');
+            `).join('') || '<li class="text-muted">لا يوجد أخبار أخرى في نفس القسم.</li>';
         }
         fetch('random_news.php')
             .then(res => res.json())
             .then(data => {
                 const list = document.getElementById('sidebar-news-list');
-        if (list) list.innerHTML = renderSidebarNews(data);
+                if (list) list.innerHTML = renderSidebarNews(data, currentNewsCategory);
             });
         function loadDynamicAd() {
             fetch('get_random_ad.php')
@@ -336,20 +340,26 @@ echo '<h6 class="fw-bold d-inline-block  border-3  border-bottom  border-primary
                 </li>
             `).join('');
         }
-        function renderRelatedTopics(data) {
-            return data.map(item => `
-                <div class="col-12">
-                    <div class="d-flex align-items-center py-2">
-                        <img src="assets/${item.image || 'd1.png'}" width="80" height="80" class="me-2">
-                        <div class="d-flex flex-column me-2">
-                            <span class="fw-medium text-muted ">${item.category || ''}</span>
-                            <a href="details.php?id=${item.id}" class="text-decoration-none text-dark fw-semibold fs-6 mt-1">
-                                ${item.title}
-                            </a>
+        function renderRelatedTopics(data, category = null) {
+            let normalizedCategory = category ? category.trim().toLowerCase() : null;
+            let filtered = normalizedCategory
+                ? data.filter(item => (item.category || '').trim().toLowerCase() === normalizedCategory)
+                : data;
+            return filtered.length > 0
+                ? filtered.map(item => `
+                    <div class="col-12">
+                        <div class="d-flex align-items-center py-2">
+                            <img src="assets/${item.image || 'd1.png'}" width="80" height="80" class="me-2">
+                            <div class="d-flex flex-column me-2">
+                                <span class="fw-medium text-muted ">${item.category || ''}</span>
+                                <a href="details.php?id=${item.id}" class="text-decoration-none text-dark fw-semibold fs-6 mt-1">
+                                    ${item.title}
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('')
+                : '<div class="col-12 text-muted">لا يوجد أخبار أخرى في نفس القسم.</div>';
         }
         function renderMainNews(news) {
             if (news.error) {
@@ -393,7 +403,7 @@ echo '<h6 class="fw-bold d-inline-block  border-3  border-bottom  border-primary
                     .then(res => res.json())
                     .then(data => {
                         const relatedTopics = document.getElementById('related-topics-list');
-                        if (relatedTopics) relatedTopics.innerHTML = renderRelatedTopics(data);
+                        if (relatedTopics) relatedTopics.innerHTML = renderRelatedTopics(data, currentNewsCategory);
                         const alsoReadList = document.getElementById('related-news-list');
                         if (alsoReadList) {
                             alsoReadList.innerHTML = renderAlsoRead(data);
