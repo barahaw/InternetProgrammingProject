@@ -18,23 +18,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $target_file = $target_dir . $image_name;
 
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id', image = '$image_name', keywords = '$keywords' WHERE Id = '$id'";
+            $stmt = $conn->prepare("UPDATE news_table SET Title = ?, Body = ?, Category_Id = ?, image = ?, keywords = ? WHERE Id = ?");
+            $stmt->bind_param('sssssi', $title, $body, $category_id, $image_name, $keywords, $id);
+            if ($stmt->execute()) {
+                $_SESSION['success_message'] = "تم تعديل الخبر بنجاح!";
+            } else {
+                $_SESSION['error_message'] = "حدث خطأ أثناء التعديل.";
+            }
+            $stmt->close();
+            header("Location: edit_news.php?id=$id");
+            exit;
         } else {
             $_SESSION['error_message'] = "فشل في رفع الصورة.";
             header("Location: edit_news.php?id=$id");
             exit;
         }
     } else {
-        $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id', keywords = '$keywords' WHERE Id = '$id'";
+        $stmt = $conn->prepare("UPDATE news_table SET Title = ?, Body = ?, Category_Id = ?, keywords = ? WHERE Id = ?");
+        $stmt->bind_param('ssssi', $title, $body, $category_id, $keywords, $id);
+        if ($stmt->execute()) {
+            $_SESSION['success_message'] = "تم تعديل الخبر بنجاح!";
+        } else {
+            $_SESSION['error_message'] = "حدث خطأ أثناء التعديل.";
+        }
+        $stmt->close();
+        header("Location: edit_news.php?id=$id");
+        exit;
     }
-
-    if ($conn->query($sql)) {
-        $_SESSION['success_message'] = "تم تعديل الخبر بنجاح!";
-    } else {
-        $_SESSION['error_message'] = "حدث خطأ أثناء التعديل.";
-    }
-    header("Location: edit_news.php?id=$id");
-    exit;
-
-    
 }

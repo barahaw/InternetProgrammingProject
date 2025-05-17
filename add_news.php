@@ -20,16 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     }
 
-    $sql = "INSERT INTO news_table (title, body, image, category_id, author_id, status, keywords) VALUES( '$title', '$body', '$image_name', '$category_id', '$author_id', '$status', '$keywords')";
-        
-    if ($conn->query($sql)) {
-      $_SESSION['success_message'] = "تم اضافة الخبر بنجاح.";
-  } else {
-      $_SESSION['error_message'] = "فشل في اضافة الخبر : " . $conn->error;
-  }
+    $stmt = $conn->prepare("INSERT INTO news_table (title, body, image, category_id, author_id, status, keywords) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param('ssssiss', $title, $body, $image_name, $category_id, $author_id, $status, $keywords);
+    if ($stmt->execute()) {
+        $_SESSION['success_message'] = "تم اضافة الخبر بنجاح.";
+    } else {
+        $_SESSION['error_message'] = "فشل في اضافة الخبر : " . $conn->error;
+    }
+    $stmt->close();
     header("Location: add_news.php");
     exit;
-    
 }
 ?>
 
@@ -69,14 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="container mt-4">
   <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success alert-dismissible fade show alert-fixed" role="alert">
-      <?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+      <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="إغلاق"></button>
     </div>
   <?php endif; ?>
 
   <?php if (isset($_SESSION['error_message'])): ?>
     <div class="alert alert-danger alert-dismissible fade show alert-fixed" role="alert">
-      <?= $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
+      <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="إغلاق"></button>
     </div>
   <?php endif; ?>
@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <select name="category_id" id="category" class="form-select" required>
             <option value="">-- اختر القسم --</option>
             <?php while($cat = $categoryResult->fetch_assoc()): ?>
-              <option value="<?= $cat['Id'] ?>"><?= $cat['Name'] ?></option>
+              <option value="<?= htmlspecialchars($cat['Id']) ?>"><?= htmlspecialchars($cat['Name']) ?></option>
             <?php endwhile; ?>
           </select>
         </div>

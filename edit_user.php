@@ -21,13 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    $sql = "UPDATE user_table SET name = '$name', email = '$email' , role = '$role' WHERE id = '$id'";
-
-    if ($conn->query($sql)) {
+    $stmt = $conn->prepare("UPDATE user_table SET name = ?, email = ?, role = ? WHERE id = ?");
+    $stmt->bind_param('sssi', $name, $email, $role, $id);
+    if ($stmt->execute()) {
         $_SESSION['success_message'] = "تم تعديل بيانات المستخدم بنجاح.";
     } else {
         $_SESSION['error_message'] = "حدث خطأ أثناء التعديل.";
     }
+    $stmt->close();
     header("Location: admin_dash.php");
     exit;
 }

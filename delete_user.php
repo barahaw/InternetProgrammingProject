@@ -23,14 +23,14 @@ if ($_SESSION['user_id'] == $id) {
     exit;
 }
 
-$sql = ("DELETE FROM user_table WHERE id = '$id'");
-
-if ($conn->query($sql)) {
+$stmt = $conn->prepare("DELETE FROM user_table WHERE id = ?");
+$stmt->bind_param('i', $id);
+if ($stmt->execute()) {
     $_SESSION['error_message'] = "تم حذف المستخدم بنجاح.";
-}
- else {
+} else {
     $_SESSION['error_message'] = "فشل اثناء حذف المستخدم: " . $conn->error;
 }
+$stmt->close();
 
 header("Location: admin_dash.php");
 exit;

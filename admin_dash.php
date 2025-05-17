@@ -162,14 +162,14 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
 <div class="container mt-5">
   <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-      <?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+      <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="إغلاق"></button>
     </div>
   <?php endif; ?>
 
   <?php if (isset($_SESSION['error_message'])): ?>
     <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-      <?= $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
+      <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="إغلاق"></button>
     </div>
   <?php endif; ?>
@@ -193,17 +193,17 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
       <tbody>
         <?php while ($user = $users->fetch_assoc()): ?>
           <tr>
-            <td><?= $user['id'] ?></td>
+            <td><?= htmlspecialchars($user['id']) ?></td>
             <td><?= htmlspecialchars($user['name']) ?></td>
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td>
-              <span class="badge bg-<?= $user['role'] === 'admin' ? 'danger' : ($user['role'] === 'editor' ? 'warning' : 'primary') ?>">
-                <?= $user['role'] ?>
+              <span class="badge bg-<?= htmlspecialchars($user['role'] === 'admin' ? 'danger' : ($user['role'] === 'editor' ? 'warning' : 'primary')) ?>">
+                <?= htmlspecialchars($user['role']) ?>
               </span>
             </td>
             <td>
-              <a href="edit_user.php?id=<?= $user['id'] ?>" class="btn btn-sm btn-outline-primary">تعديل</a>
-              <a href="delete_user.php?id=<?= $user['id'] ?>" class="btn btn-sm btn-outline-danger"
+              <a href="edit_user.php?id=<?= htmlspecialchars($user['id']) ?>" class="btn btn-sm btn-outline-primary">تعديل</a>
+              <a href="delete_user.php?id=<?= htmlspecialchars($user['id']) ?>" class="btn btn-sm btn-outline-danger"
                  onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المستخدم؟');">حذف</a>
             </td>
           </tr>
@@ -259,7 +259,7 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
             <tbody>
                 <?php while($ad = $ads->fetch_assoc()): ?>
                     <tr>
-                        <td><?= $ad['id'] ?></td>
+                        <td><?= htmlspecialchars($ad['id']) ?></td>
                         <td><?= htmlspecialchars($ad['ad_text']) ?></td>
                         <td>
                             <?php if (!empty($ad['image']) && file_exists($ad['image'])): ?>
@@ -269,8 +269,8 @@ $ads = $conn->query("SELECT id, ad_text, image FROM ads ORDER BY id DESC");
                             <?php endif; ?>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-primary" onclick="editAd(<?= $ad['id'] ?>, '<?= htmlspecialchars(addslashes($ad['ad_text']), ENT_QUOTES) ?>', '<?= !empty($ad['image']) ? htmlspecialchars(addslashes($ad['image']), ENT_QUOTES) : '' ?>')">تعديل</button>
-                            <a href="admin_dash.php?delete_ad=<?= $ad['id'] ?>#ads-management" class="btn btn-sm btn-outline-danger"
+                            <button class="btn btn-sm btn-outline-primary" onclick="editAd(<?= htmlspecialchars($ad['id']) ?>, '<?= htmlspecialchars(addslashes($ad['ad_text']), ENT_QUOTES) ?>', '<?= !empty($ad['image']) ? htmlspecialchars(addslashes($ad['image']), ENT_QUOTES) : '' ?>')">تعديل</button>
+                            <a href="admin_dash.php?delete_ad=<?= htmlspecialchars($ad['id']) ?>#ads-management" class="btn btn-sm btn-outline-danger"
                                onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا الإعلان؟');">حذف</a>
                         </td>
                     </tr>

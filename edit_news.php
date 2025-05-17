@@ -36,15 +36,13 @@ $categories = $conn->query("SELECT * FROM category_table");
 <div class="container mt-4">
   <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success text-center">
-      <?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+      <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
     </div>
   <?php endif; ?>
 
-  
-
   <?php if (isset($_SESSION['error_message'])): ?>
     <div class="alert alert-danger text-center">
-      <?= $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
+      <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
     </div>
   <?php endif; ?>
 </div>
@@ -56,7 +54,7 @@ $categories = $conn->query("SELECT * FROM category_table");
     </div>
     <div class="card-body">
       <form action="update_news.php" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="Id" value="<?= $news['Id']; ?>">
+        <input type="hidden" name="Id" value="<?= htmlspecialchars($news['Id']); ?>">
 
         <div class="mb-3">
           <label class="form-label">العنوان</label>
@@ -71,7 +69,7 @@ $categories = $conn->query("SELECT * FROM category_table");
         <div class="mb-3">
           <label class="form-label">الصورة (اختياري)</label><br>
           <?php if (!empty($news['image'])): ?>
-            <img src="uploads/<?= $news['image']; ?>" width="150" class="mb-2"><br>
+            <img src="uploads/<?= htmlspecialchars($news['image']); ?>" width="150" class="mb-2"><br>
           <?php endif; ?>
           <input type="file" name="image" class="form-control">
         </div>
@@ -80,8 +78,8 @@ $categories = $conn->query("SELECT * FROM category_table");
           <label class="form-label">القسم</label>
           <select name="category_id" class="form-select" required>
             <?php while ($cat = $categories->fetch_assoc()): ?>
-              <option value="<?= $cat['Id']; ?>" <?= ($cat['Id'] == $news['Category_Id']) ? 'selected' : ''; ?>>
-                <?= $cat['Name']; ?>
+              <option value="<?= htmlspecialchars($cat['Id']); ?>" <?= ($cat['Id'] == $news['Category_Id']) ? 'selected' : ''; ?>>
+                <?= htmlspecialchars($cat['Name']); ?>
               </option>
             <?php endwhile; ?>
           </select>

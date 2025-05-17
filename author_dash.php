@@ -90,10 +90,10 @@ $result = $conn->query($sql);
   $sideSql = "SELECT id, title, status FROM news_table WHERE author_id = $author_id ORDER BY date_posted DESC";
   $sideRes = $conn->query($sideSql);
   while ($row = $sideRes->fetch_assoc()): ?>
-    <a href="edit_news.php?id=<?= $row['id'] ?>">
+    <a href="edit_news.php?id=<?= htmlspecialchars($row['id']) ?>">
       <?= htmlspecialchars($row['title']) ?>
-      <span class="badge bg-<?= $row['status'] == 'approved' ? 'success' : 'warning' ?> float-end">
-        <?= $row['status'] == 'approved' ? 'تمت الموافقة' : 'بانتظار' ?>
+      <span class="badge bg-<?= htmlspecialchars($row['status'] == 'approved' ? 'success' : 'warning') ?> float-end">
+        <?= htmlspecialchars($row['status'] == 'approved' ? 'تمت الموافقة' : 'بانتظار') ?>
       </span>
     </a>
   <?php endwhile; ?>
@@ -103,13 +103,13 @@ $result = $conn->query($sql);
 <div class="container mt-4">
   <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success text-center">
-      <?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+      <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
     </div>
   <?php endif; ?>
 
   <?php if (isset($_SESSION['error_message'])): ?>
     <div class="alert alert-danger text-center">
-      <?= $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
+      <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
     </div>
   <?php endif; ?>
 </div>
@@ -126,24 +126,24 @@ $result = $conn->query($sql);
         <div class="col-md-6 mb-4">
           <div class="card shadow-sm">
             <?php if (!empty($row['image'])): ?>
-              <img src="uploads/<?= $row['image']; ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
+              <img src="uploads/<?= htmlspecialchars($row['image']); ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
             <?php endif; ?>
             <div class="card-body">
               <h5 class="card-title"><?= htmlspecialchars($row['title']); ?></h5>
               <p class="card-text text-muted">
-                القسم: <?= $row['category_name']; ?> |
+                القسم: <?= htmlspecialchars($row['category_name']); ?> |
                 الحالة:
-                <span class="badge bg-<?= $row['status'] == 'approved' ? 'success' : 'warning'; ?>">
-                  <?= $row['status']; ?>
+                <span class="badge bg-<?= htmlspecialchars($row['status'] == 'approved' ? 'success' : 'warning'); ?>">
+                  <?= htmlspecialchars($row['status']); ?>
                 </span>
                 <?php if (!empty($row['keywords'])): ?>
                   <br>الكلمات المفتاحية: <?= htmlspecialchars($row['keywords']); ?>
                 <?php endif; ?>
               </p>
-              <p class="card-text"><small class="text-muted">بتاريخ: <?= $row['date_posted']; ?></small></p>
+              <p class="card-text"><small class="text-muted">بتاريخ: <?= htmlspecialchars($row['date_posted']); ?></small></p>
               <div class="d-flex justify-content-between">
-                <a href="edit_news.php?id=<?= $row['id']; ?>" class="btn btn-sm btn-outline-primary">تعديل</a>
-                <a href="delete_news.php?id=<?= $row['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد؟')">حذف</a>
+                <a href="edit_news.php?id=<?= htmlspecialchars($row['id']); ?>" class="btn btn-sm btn-outline-primary">تعديل</a>
+                <a href="delete_news.php?id=<?= htmlspecialchars($row['id']); ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد؟')">حذف</a>
               </div>
             </div>
           </div>

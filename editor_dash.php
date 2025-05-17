@@ -39,7 +39,7 @@ $result = $conn->query($sql);
 <div class="container mt-4">
   <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+      <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="إغلاق"></button>
     </div>
   <?php endif; ?>
@@ -50,30 +50,30 @@ $result = $conn->query($sql);
     <div class="row">
       <?php while($row = $result->fetch_assoc()): ?>
         <div class="col-md-6 mb-4">
-          <div class="card shadow-sm" data-bs-toggle="modal" data-bs-target="#modal<?= $row['Id']; ?>" style="cursor: pointer;">
+          <div class="card shadow-sm" data-bs-toggle="modal" data-bs-target="#modal<?= htmlspecialchars($row['Id']); ?>" style="cursor: pointer;">
             <?php if (!empty($row['Image'])): ?>
               <img src="assets/<?= htmlspecialchars($row['Image']); ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
             <?php endif; ?>
             <div class="card-body">
               <h5 class="card-title"><?= htmlspecialchars($row['Title']); ?></h5>
               <p class="card-text">
-                <strong>القسم:</strong> <?= $row['category_name']; ?> <br>
-                <strong>الكاتب:</strong> <?= $row['author_name']; ?> <br>
+                <strong>القسم:</strong> <?= htmlspecialchars($row['category_name']); ?> <br>
+                <strong>الكاتب:</strong> <?= htmlspecialchars($row['author_name']); ?> <br>
                 <strong>الحالة:</strong> 
-                <span class="badge bg-<?= $row['Status'] == 'approved' ? 'success' : ($row['Status'] == 'pending' ? 'warning' : 'secondary'); ?>">
-                  <?= $row['Status']; ?>
+                <span class="badge bg-<?= htmlspecialchars($row['Status'] == 'approved' ? 'success' : ($row['Status'] == 'pending' ? 'warning' : 'secondary')); ?>">
+                  <?= htmlspecialchars($row['Status']); ?>
                 </span>
               </p>
-              <p class="card-text"><small class="text-muted">بتاريخ: <?= $row['Date_Posted']; ?></small></p>
+              <p class="card-text"><small class="text-muted">بتاريخ: <?= htmlspecialchars($row['Date_Posted']); ?></small></p>
             </div>
           </div>
         </div>
 
-        <div class="modal fade" id="modal<?= $row['Id']; ?>" tabindex="-1" aria-labelledby="modalLabel<?= $row['Id']; ?>" aria-hidden="true">
+        <div class="modal fade" id="modal<?= htmlspecialchars($row['Id']); ?>" tabindex="-1" aria-labelledby="modalLabel<?= htmlspecialchars($row['Id']); ?>" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel<?= $row['Id']; ?>">تفاصيل الخبر</h5>
+                <h5 class="modal-title" id="modalLabel<?= htmlspecialchars($row['Id']); ?>">تفاصيل الخبر</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
               </div>
               <div class="modal-body">
@@ -81,13 +81,13 @@ $result = $conn->query($sql);
                   <img src="assets/<?= htmlspecialchars($row['Image']); ?>" class="img-fluid mb-3" style="max-height: 300px; object-fit: cover;">
                 <?php endif; ?>
                 <h4><?= htmlspecialchars($row['Title']); ?></h4>
-                <p class="text-muted">القسم: <?= $row['category_name']; ?> | الكاتب: <?= $row['author_name']; ?></p>
+                <p class="text-muted">القسم: <?= htmlspecialchars($row['category_name']); ?> | الكاتب: <?= htmlspecialchars($row['author_name']); ?></p>
                 <p><?= nl2br(htmlspecialchars($row['Body'])); ?></p>
               </div>
               <div class="modal-footer">
-                <a href="approve_news.php?id=<?= $row['Id']; ?>" class="btn btn-success">موافقة</a>
-                <a href="reject_news.php?id=<?= $row['Id']; ?>" class="btn btn-warning">رفض</a>
-                <a href="delete_news.php?id=<?= $row['Id']; ?>" class="btn btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">حذف</a>
+                <a href="approve_news.php?id=<?= htmlspecialchars($row['Id']); ?>" class="btn btn-success">موافقة</a>
+                <a href="reject_news.php?id=<?= htmlspecialchars($row['Id']); ?>" class="btn btn-warning">رفض</a>
+                <a href="delete_news.php?id=<?= htmlspecialchars($row['Id']); ?>" class="btn btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">حذف</a>
               </div>
             </div>
           </div>
