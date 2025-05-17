@@ -9,6 +9,6 @@ if (isset($_GET['id'])) {
     $conn->query($sql);
     $_SESSION['success_message'] = "تم حذف الخبر بنجاح.";
 }
-header("Location: " . $_SERVER['HTTP_REFERER']); // from chatgpt
+header("Location: " . $_SERVER['HTTP_REFERER']);
 exit;
 ?>

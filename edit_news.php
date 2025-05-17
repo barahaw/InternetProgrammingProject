@@ -87,6 +87,11 @@ $categories = $conn->query("SELECT * FROM category_table");
           </select>
         </div>
 
+        <div class="mb-3">
+          <label class="form-label">الكلمات المفتاحية (مفصولة بفواصل):</label>
+          <input type="text" name="keywords" class="form-control" value="<?= htmlspecialchars($news['keywords'] ?? '') ?>">
+        </div>
+
         <button type="submit" class="btn btn-success">تحديث</button>
         <a href="author_dash.php" class="btn btn-secondary">إلغاء</a>
       </form>
@@ -124,6 +129,6 @@ $categories = $conn->query("SELECT * FROM category_table");
       bsAlert.close();
     }, 10000); 
   });
-  
-  </body>
+</script>
+</body>
 </html>

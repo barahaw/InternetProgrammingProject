@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['Title'];
     $body = $_POST['body'];
     $category_id = $_POST['category_id'];
+    $keywords = isset($_POST['keywords']) ? $_POST['keywords'] : '';
 
     $image_name = "";
 
@@ -17,14 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $target_file = $target_dir . $image_name;
 
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id', image = '$image_name' WHERE Id = '$id'";
+            $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id', image = '$image_name', keywords = '$keywords' WHERE Id = '$id'";
         } else {
             $_SESSION['error_message'] = "فشل في رفع الصورة.";
             header("Location: edit_news.php?id=$id");
             exit;
         }
     } else {
-        $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id' WHERE Id = '$id'";
+        $sql = "UPDATE news_table SET Title = '$title' , Body = '$body', Category_Id = '$category_id', keywords = '$keywords' WHERE Id = '$id'";
     }
 
     if ($conn->query($sql)) {

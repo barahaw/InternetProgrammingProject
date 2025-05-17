@@ -6,7 +6,7 @@ require_once 'config.php';
 
 $author_id = isset($_SESSION['author_id']) ? $_SESSION['author_id'] : 0;
 
-$sql = "SELECT news_table.id, news_table.title, news_table.date_posted, news_table.status, news_table.image, category_table.name AS category_name 
+$sql = "SELECT news_table.id, news_table.title, news_table.date_posted, news_table.status, news_table.image, news_table.keywords, category_table.name AS category_name 
         FROM news_table
         LEFT JOIN category_table ON news_table.category_id = category_table.id
         WHERE news_table.author_id = $author_id";
@@ -136,6 +136,9 @@ $result = $conn->query($sql);
                 <span class="badge bg-<?= $row['status'] == 'approved' ? 'success' : 'warning'; ?>">
                   <?= $row['status']; ?>
                 </span>
+                <?php if (!empty($row['keywords'])): ?>
+                  <br>الكلمات المفتاحية: <?= htmlspecialchars($row['keywords']); ?>
+                <?php endif; ?>
               </p>
               <p class="card-text"><small class="text-muted">بتاريخ: <?= $row['date_posted']; ?></small></p>
               <div class="d-flex justify-content-between">

@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
     $body = $_POST['body'];
     $category_id = $_POST['category_id'];
+    $keywords = isset($_POST['keywords']) ? $_POST['keywords'] : '';
     $author_id = isset($_SESSION['author_id']) ? $_SESSION['author_id'] : 0;
     $status = 'pending';
 
@@ -19,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     }
 
-    $sql = "INSERT INTO news_table (title, body, image, category_id, author_id, status) VALUES( '$title', '$body', '$image_name', '$category_id', '$author_id', '$status')";
+    $sql = "INSERT INTO news_table (title, body, image, category_id, author_id, status, keywords) VALUES( '$title', '$body', '$image_name', '$category_id', '$author_id', '$status', '$keywords')";
         
     if ($conn->query($sql)) {
       $_SESSION['success_message'] = "تم اضافة الخبر بنجاح.";
@@ -111,6 +112,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <option value="<?= $cat['Id'] ?>"><?= $cat['Name'] ?></option>
             <?php endwhile; ?>
           </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">الكلمات المفتاحية (مفصولة بفواصل):</label>
+          <input type="text" name="keywords" class="form-control">
         </div>
 
         <button type="submit" class="btn btn-success">إضافة الخبر</button>
