@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql = "INSERT INTO user_table (name, email, password, role) VALUES('$name', '$email', '$password', '$role')";
     
+    //from chatgpt 
     if ($conn->query($sql)) {
-      //from chatgpt 
      $_SESSION['success_message'] = "تم إنشاء المستخدم بنجاح.";
     } 
     else {
