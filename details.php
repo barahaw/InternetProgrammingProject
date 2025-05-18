@@ -31,10 +31,10 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mb-2 mb-lg-0 text-white ">
                     <li class="nav-item "><a class="nav-link active " href="index.php">الرئيسية</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#political">سياسة</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#economic">اقتصاد</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">صحة</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">رياضة</a></li>
+                    <li class="nav-item"><a class="nav-link" href="catogry.php?category=سياسة">سياسة</a></li>
+                    <li class="nav-item"><a class="nav-link" href="catogry.php?category=اقتصاد">اقتصاد</a></li>
+                    <li class="nav-item"><a class="nav-link" href="catogry.php?category=صحة">صحة</a></li>
+                    <li class="nav-item"><a class="nav-link" href="catogry.php?category=رياضة">رياضة</a></li>
                 </ul>
                 <form class="d-flex me-auto" role="search">
                     <input class="form-control me-2" type="search" placeholder="بحث" aria-label="بحث"

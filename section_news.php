@@ -10,7 +10,7 @@ if (!$category) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT n.id, n.title, LEFT(n.body, 120) AS excerpt, n.body, n.image, c.name as category FROM news_table n LEFT JOIN category_table c ON n.category_id = c.id WHERE c.name = ? ORDER BY n.date_posted DESC LIMIT 6");
+$stmt = $conn->prepare("SELECT n.id, n.title, LEFT(n.body, 107) AS excerpt, n.body, n.image, c.name as category FROM news_table n LEFT JOIN category_table c ON n.category_id = c.id WHERE c.name = ? ORDER BY n.date_posted DESC LIMIT 6");
 $stmt->bind_param('s', $category);
 $stmt->execute();
 $result = $stmt->get_result();

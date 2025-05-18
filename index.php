@@ -12,7 +12,6 @@
     <style>
         nav {
             background-color: #0f1432;
-            ;
         }
 
         .navbar-nav .nav-link {
@@ -143,33 +142,6 @@
                         <a href="details.php?id=${item.id}" class="text-decoration-none text-dark">${item.title}</a>
                     </li>
                 `).join('');
-                let cardsHtml = data.cards.map(card => `
-                    <div class="col-md-6">
-                        <div class="card border-0">
-                            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="News Image"></a>
-                            <div class="card-body">
-                                <span class="text-secondary">${card.category}</span>
-                                <h6 class="card-title">
-                                    <a href="details.php?id=${card.id}" class="text-decoration-none text-dark">${card.title}</a>
-                                </h6>
-                                <p class="card-text text-secondary">${card.excerpt}</p>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-                let extraCardsHtml = data.extraCards.map(card => `
-                    <div class="col-md-4">
-                        <div class="card border-0">
-                            <div class="card-body">
-                                <span class="mb-2 text-secondary">${card.category}</span>
-                                <h6 class="card-title">
-                                    <a href="details.php?id=${card.id}" class="text-decoration-none text-dark">${card.title}</a>
-                                </h6>
-                                <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="News Image" width="120"></a>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
                 let moreNewsHtml = '';
                 if (data.moreNews && data.moreNews.length) {
                     moreNewsHtml = `
@@ -237,10 +209,6 @@
                             <ul class="list-unstyled">${listHtml}</ul>
                         </div>
                         <div class="col-md-8">
-                            <div class="row g-3">
-                                ${cardsHtml}
-                                ${extraCardsHtml}
-                            </div>
                             <div id="more-news-list">${moreNewsHtml}</div>
                         </div>
                     </section>
@@ -277,118 +245,59 @@
             }
             window.addEventListener('DOMContentLoaded', addCategoryMoreLinks);
 
-            // Handle main navbar search form
             const mainSearchForm = document.getElementById('main-search-form');
             if (mainSearchForm) {
                 mainSearchForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     const q = this.querySelector('input[type="search"]').value.trim();
                     if (!q) return;
-                    // Redirect to category page with search param
                     window.location.href = `catogry.php?q=${encodeURIComponent(q)}`;
                 });
             }
         </script>
 
-        <section class="row g-5 mb-5" id="top-featured-news"></section>
-
-        <script>
-            function renderTopFeaturedNews(newsArr) {
-                return `
-                    <div class="col-md-4">
-                        <div class="card bg-dark text-white">
-                            <a href="details.php?id=${newsArr[0].id}"><img src="assets/${newsArr[0].image}" class="card-img-top" alt="${newsArr[0].title}"></a>
-                            <div class="card-body">
-                                <h6 class="card-title text-secondary">${newsArr[0].category}</h6>
-                                <a href="details.php?id=${newsArr[0].id}" class="text-white text-decoration-none"><h5>${newsArr[0].title}</h5></a>
-                                <p class="card-text">${newsArr[0].summary}</p>
-                                <p class="card-text text-secondary">${newsArr[0].body}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mb-3 border-0">
-                            <a href="details.php?id=${newsArr[1].id}"><img src="assets/${newsArr[1].image}" class="card-img-top" alt="${newsArr[1].title}"></a>
-                            <div class="card-body">
-                                <h6 class="card-title text-secondary-emphasis">${newsArr[1].category}</h6>
-                                <a href="details.php?id=${newsArr[1].id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark">${newsArr[1].title}</p></a>
-                            </div>
-                        </div>
-                        <div class="card border-0">
-                            <a href="details.php?id=${newsArr[2].id}"><img src="assets/${newsArr[2].image}" class="card-img-top" alt="${newsArr[2].title}"></a>
-                            <div class="card-body">
-                                <h5 class="card-title">${newsArr[2].category}</h5>
-                                <a href="details.php?id=${newsArr[2].id}" class="text-dark text-decoration-none"><p class="card-text">${newsArr[2].title}</p></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card mb-3 border-0">
-                            <a href="details.php?id=${newsArr[3].id}"><img src="assets/${newsArr[3].image}" class="card-img-top" alt="${newsArr[3].title}"></a>
-                            <div class="card-body">
-                                <h5 class="card-title">${newsArr[3].category}</h5>
-                                <a href="details.php?id=${newsArr[3].id}" class="text-dark text-decoration-none"><p class="card-text">${newsArr[3].title}</p></a>
-                            </div>
-                        </div>
-                        <div class="card border-0">
-                            <a href="details.php?id=${newsArr[4].id}"><img src="assets/${newsArr[4].image}" class="card-img-top" alt="${newsArr[4].title}"></a>
-                            <div class="card-body">
-                                <h5 class="card-title">${newsArr[4].category}</h5>
-                                <a href="details.php?id=${newsArr[4].id}" class="text-dark text-decoration-none"><p class="card-text">${newsArr[4].title}</p></a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            function loadTopFeaturedNews() {
-                fetch('featured_news.php')
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.length >= 5) {
-                            document.getElementById('top-featured-news').innerHTML = renderTopFeaturedNews(data);
-                        } else {
-                            document.getElementById('top-featured-news').innerHTML = '<div class="alert alert-info">لا توجد أخبار مميزة حالياً.</div>';
-                        }
-                    });
-            }
-
-            window.addEventListener('DOMContentLoaded', loadTopFeaturedNews);
-        </script>
-
         <section class="row g-1 mb-5" id="political-news-section"></section>
 
         <script>
-            function renderPoliticalNewsSection(data) {
+            function renderSectionWithMainAndSideCards(data, sectionTitle) {
                 let mainCard = data.main ? `
                     <div class="col-md-6">
-                        <div class="card border border-0 ">
-                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}"></a>
+                        <div class="card border-0 h-100">
+                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="height:220px;object-fit:cover;"></a>
                             <div class="card-body">
-                                <h5 class="card-title">${data.main.category}</h5>
+                                <h6 class="card-title mt-2">${data.main.category}</h6>
                                 <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
                                 <p class="text-secondary">${data.main.excerpt}</p>
                             </div>
                         </div>
                     </div>
                 ` : '';
-                let sideCards = data.side.map(card => `
-                    <div class="card border-0 mb-3">
-                        <div class="ratio ratio-16x9">
-                            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top img-fluid" alt="${card.title}"></a>
-                        </div>
-                        <div class="card-body mt-3">
-                            <h5 class="card-title">${card.category}</h5>
-                            <a href="details.php?id=${card.id}" class="text-decoration-none text-dark"><strong>${card.title}</strong></a>
-                        </div>
-                    </div>
-                `).join('');
+                let sideCards = '';
+                if (data.side && data.side.length > 0) {
+                    for (let i = 0; i < 4; i += 2) {
+                        sideCards += '<div class="col-md-3 d-flex flex-column gap-2">';
+                        for (let j = i; j < i + 2 && j < data.side.length; j++) {
+                            const card = data.side[j];
+                            sideCards += `
+        <div class="card border-0 mb-2 p-1" style="font-size:0.92rem;">
+            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="height:90px;object-fit:cover;"></a>
+            <div class="card-body p-2">
+                <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${card.category || ''}</h6>
+                <a href="details.php?id=${card.id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark mb-1" style="font-size:0.98rem;">${card.title || ''}</p></a>
+                <p class="card-text text-info mb-0" style="font-size:0.9rem;">${card.author ? 'الكاتب: ' + card.author : ''}</p>
+            </div>
+        </div>
+    `;
+                        }
+                        sideCards += '</div>';
+                    }
+                }
                 return `
                     <div class="row ">
-                        <span class="col-md border-bottom   ">
+                        <span class="col-md border-bottom">
                             <div class="d-flex justify-content-between">
                                 <h5>
-                                    <span class="border-bottom border-4 border-primary pb-1 container">سياسة</span>
+                                    <span class="border-bottom border-4 border-primary pb-1 container">${sectionTitle}</span>
                                 </h5>
                                 <a href="#" class="text-decoration-none">المزيد</a>
                             </div>
@@ -396,11 +305,7 @@
                     </div>
                     <div class="row g-3">
                         ${mainCard}
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column ">
-                                ${sideCards}
-                            </div>
-                        </div>
+                        ${sideCards}
                     </div>
                 `;
             }
@@ -408,7 +313,7 @@
                 fetch('section_news.php?category=سياسة&full=1')
                     .then(res => res.json())
                     .then(data => {
-                        document.getElementById('political-news-section').innerHTML = renderPoliticalNewsSection(data);
+                        document.getElementById('political-news-section').innerHTML = renderSectionWithMainAndSideCards(data, 'سياسة');
                     });
             }
             window.addEventListener('DOMContentLoaded', loadPoliticalNewsSection);
@@ -418,47 +323,7 @@
 
         <script>
             function renderEconomicNewsSection(data) {
-                let mainCard = data.main ? `
-                    <div class="col-md-6">
-                        <div class="card border-0 h-100">
-                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}"></a>
-                            <div class="card-body">
-                                <h6 class="card-title mt-2">${data.main.category}</h6>
-                                <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
-                                <p class="text-secondary">${data.main.excerpt}</p>
-                            </div>
-                        </div>
-                    </div>
-                ` : '';
-                let sideCards = data.side.map(card => `
-                    <div class="card border-0 mb-3">
-                        <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}"></a>
-                        <div class="card-body">
-                            <h6 class="card-title">${card.category}</h6>
-                            <a href="details.php?id=${card.id}" class="text-decoration-none text-dark"><strong>${card.title}</strong></a>
-                        </div>
-                    </div>
-                `).join('');
-                return `
-                    <div class="row">
-                        <span class="col-md border-bottom">
-                            <div class="d-flex justify-content-between">
-                                <h5>
-                                    <span class="border-bottom border-4 border-primary pb-1 container">اقتصاد</span>
-                                </h5>
-                                <a href="#" class="text-decoration-none">المزيد</a>
-                            </div>
-                        </span>
-                    </div>
-                    <div class="row g-3">
-                        ${mainCard}
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column gap-3">
-                                ${sideCards}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                return renderSectionWithMainAndSideCards(data, 'اقتصاد');
             }
             function loadEconomicNewsSection() {
                 fetch('section_news.php?category=اقتصاد&full=1')
@@ -477,7 +342,7 @@
                 let mainCard = data.main ? `
                     <div class="col-md-6 gy-3">
                         <div class="card border-0 h-100">
-                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}"></a>
+                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="height:300px;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h6 class="card-title">${data.main.category}</h6>
                                 <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -486,15 +351,26 @@
                         </div>
                     </div>
                 ` : '';
-                let sideCards = data.side.map(card => `
-                    <div class="card border-0 mb-3">
-                        <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}"></a>
-                        <div class="card-body">
-                            <h6 class="card-title">${card.category}</h6>
-                            <a href="details.php?id=${card.id}" class="text-decoration-none text-dark"><strong>${card.title}</strong></a>
-                        </div>
-                    </div>
-                `).join('');
+                let sideCards = '';
+                if (data.side && data.side.length > 0) {
+                    for (let i = 0; i < 4; i += 2) {
+                        sideCards += '<div class="col-md-3 d-flex flex-column gap-2">';
+                        for (let j = i; j < i + 2 && j < data.side.length; j++) {
+                            const card = data.side[j];
+                            sideCards += `
+        <div class="card border-0 mb-2 p-1" style="font-size:0.92rem;">
+            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="height:150px;object-fit:cover;"></a>
+            <div class="card-body p-2">
+                <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${card.category || ''}</h6>
+                <a href="details.php?id=${card.id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark mb-1" style="font-size:0.98rem;">${card.title || ''}</p></a>
+                <p class="card-text text-info mb-0" style="font-size:0.9rem;">${card.author ? 'الكاتب: ' + card.author : ''}</p>
+            </div>
+        </div>
+    `;
+                        }
+                        sideCards += '</div>';
+                    }
+                }
                 return `
                     <div class="row gy-3">
                         <span class="col-md border-bottom">
@@ -508,11 +384,7 @@
                     </div>
                     <div class="row g-3">
                         ${mainCard}
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column gap-3">
-                                ${sideCards}
-                            </div>
-                        </div>
+                        ${sideCards}
                     </div>
                 `;
             }
@@ -533,7 +405,7 @@
                 let mainCard = data.main ? `
                     <div class="col-md-6">
                         <div class="card border-0 h-100">
-                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}"></a>
+                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="height:220px;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h5 class="card-title px-2">${data.main.category}</h5>
                                 <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -542,15 +414,26 @@
                         </div>
                     </div>
                 ` : '';
-                let sideCards = data.side.map(card => `
-                    <div class="card border-0 mb-3">
-                        <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}"></a>
-                        <div class="card-body">
-                            <h5 class="card-title">${card.category}</h5>
-                            <a href="details.php?id=${card.id}" class="text-decoration-none text-dark"><strong>${card.title}</strong></a>
-                        </div>
-                    </div>
-                `).join('');
+                let sideCards = '';
+                if (data.side && data.side.length > 0) {
+                    for (let i = 0; i < 4; i += 2) {
+                        sideCards += '<div class="col-md-3 d-flex flex-column gap-2">';
+                        for (let j = i; j < i + 2 && j < data.side.length; j++) {
+                            const card = data.side[j];
+                            sideCards += `
+        <div class="card border-0 mb-2 p-1" style="font-size:0.92rem;">
+            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="height:90px;object-fit:cover;"></a>
+            <div class="card-body p-2">
+                <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${card.category || ''}</h6>
+                <a href="details.php?id=${card.id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark mb-1" style="font-size:0.98rem;">${card.title || ''}</p></a>
+                <p class="card-text text-info mb-0" style="font-size:0.9rem;">${card.author ? 'الكاتب: ' + card.author : ''}</p>
+            </div>
+        </div>
+    `;
+                        }
+                        sideCards += '</div>';
+                    }
+                }
                 return `
                     <div class="row gy-3">
                         <span class="col-md border-bottom">
@@ -564,11 +447,7 @@
                     </div>
                     <div class="row g-3">
                         ${mainCard}
-                        <div class="col-md-3">
-                            <div class="d-flex flex-column gap-3">
-                                ${sideCards}
-                            </div>
-                        </div>
+                        ${sideCards}
                     </div>
                 `;
             }
