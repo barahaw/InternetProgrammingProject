@@ -11,7 +11,7 @@ function renderMainRandomNews(newsArr) {
       newsArr[0].image
     }" class="card-img-top" alt="${
       newsArr[0].title
-    }" style="aspect-ratio:16/14;object-fit:cover;"></a>
+    }" style="aspect-ratio:1/1;object-fit:cover;"></a>
                 <div class="card-body">
                     <h6 class="card-title text-secondary">${
                       newsArr[0].category || ""
@@ -43,7 +43,7 @@ function renderMainRandomNews(newsArr) {
         newsArr[i].image
       }" class="card-img-top" alt="${
         newsArr[i].title
-      }" style="aspect-ratio:16/14;object-fit:cover;"></a>
+      }" style="aspect-ratio:1/1;object-fit:cover;"></a>
                 <div class="card-body">
                     <h6 class="card-title text-secondary-emphasis">${
                       newsArr[i].category || ""
@@ -70,7 +70,7 @@ function renderMainRandomNews(newsArr) {
         newsArr[i].image
       }" class="card-img-top" alt="${
         newsArr[i].title
-      }" style="aspect-ratio:16/14;object-fit:cover;"></a>
+      }" style="aspect-ratio:1/1;object-fit:cover;"></a>
                 <div class="card-body">
                     <h5 class="card-title">${newsArr[i].category || ""}</h5>
                     <a href="details.php?id=${
@@ -132,7 +132,7 @@ function renderMostReadSection(data) {
                                       news.id
                                     }"><img src="assets/${
                             news.image || "more1.png"
-                          }" class="card-img-top" alt="News Image" style="aspect-ratio:16/14;object-fit:cover;"></a>
+                          }" class="card-img-top" alt="News Image" style="aspect-ratio:1/1;object-fit:cover;"></a>
                                     <div class="card-body">
                                         <span class="text-secondary">${
                                           news.category || ""
@@ -174,7 +174,7 @@ function renderMostReadSection(data) {
                                       news.id
                                     }" class="order-2 mt-1"><img src="assets/${
                             news.image || "more1.png"
-                          }" class="card-img-top" alt="News Image" style="aspect-ratio:16/14;object-fit:cover;"></a>
+                          }" class="card-img-top" alt="News Image" style="aspect-ratio:1/1;object-fit:cover;"></a>
                                 </div>
                             </div>
                             `;
@@ -265,7 +265,7 @@ function renderSectionWithMainAndSideCards(data, sectionTitle) {
     ? `
         <div class="col-md-6">
             <div class="card border-0 h-100">
-                <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
+                <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:1/1;object-fit:cover;"></a>
                 <div class="card-body">
                     <h6 class="card-title mt-2">${data.main.category}</h6>
                     <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -287,7 +287,7 @@ function renderSectionWithMainAndSideCards(data, sectionTitle) {
           card.image
         }" class="card-img-top" alt="${
           card.title
-        }" style="aspect-ratio:16/14;object-fit:cover;"></a>
+        }" style="aspect-ratio:1/1;object-fit:cover;"></a>
     <div class="card-body p-2">
         <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${
           card.category || ""
@@ -334,12 +334,25 @@ function loadPoliticalNewsSection() {
 }
 window.addEventListener("DOMContentLoaded", loadPoliticalNewsSection);
 
+function renderEconomicNewsSection(data) {
+  return renderSectionWithMainAndSideCards(data, "اقتصاد");
+}
+function loadEconomicNewsSection() {
+  fetch("section_news.php?category=اقتصاد&full=1")
+    .then((res) => res.json())
+    .then((data) => {
+      document.getElementById("economic-news-section").innerHTML =
+        renderEconomicNewsSection(data);
+    });
+}
+window.addEventListener("DOMContentLoaded", loadEconomicNewsSection);
+
 function renderSportNewsSection(data) {
   let mainCard = data.main
     ? `
         <div class="col-md-6 gy-3">
             <div class="card border-0 h-100">
-                <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
+                <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:1/1;object-fit:cover;"></a>
                 <div class="card-body">
                     <h6 class="card-title">${data.main.category}</h6>
                     <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -361,7 +374,7 @@ function renderSportNewsSection(data) {
           card.image
         }" class="card-img-top" alt="${
           card.title
-        }" style="aspect-ratio:16/14;object-fit:cover;"></a>
+        }" style="aspect-ratio:1/1;object-fit:cover;"></a>
     <div class="card-body p-2">
         <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${
           card.category || ""
@@ -413,7 +426,7 @@ function renderHealthNewsSection(data) {
     ? `
         <div class="col-md-6">
             <div class="card border-0 h-100">
-                <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
+                <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:1/1;object-fit:cover;"></a>
                 <div class="card-body">
                     <h5 class="card-title px-2">${data.main.category}</h5>
                     <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -435,7 +448,7 @@ function renderHealthNewsSection(data) {
           card.image
         }" class="card-img-top" alt="${
           card.title
-        }" style="aspect-ratio:16/14;object-fit:cover;"></a>
+        }" style="aspect-ratio:1/1;object-fit:cover;"></a>
     <div class="card-body p-2">
         <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${
           card.category || ""
