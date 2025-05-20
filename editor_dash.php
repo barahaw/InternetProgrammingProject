@@ -52,7 +52,7 @@ $result = $conn->query($sql);
         <div class="col-md-6 mb-4">
           <div class="card shadow-sm" data-bs-toggle="modal" data-bs-target="#modal<?= htmlspecialchars($row['Id']); ?>" style="cursor: pointer;">
             <?php if (!empty($row['Image'])): ?>
-              <img src="assets/<?= htmlspecialchars($row['Image']); ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
+              <img src="assets/<?= htmlspecialchars($row['Image']); ?>" class="card-img-top" style="aspect-ratio: 1/1; object-fit: cover;">
             <?php endif; ?>
             <div class="card-body">
               <h5 class="card-title"><?= htmlspecialchars($row['Title']); ?></h5>
@@ -78,7 +78,7 @@ $result = $conn->query($sql);
               </div>
               <div class="modal-body">
                 <?php if (!empty($row['Image'])): ?>
-                  <img src="assets/<?= htmlspecialchars($row['Image']); ?>" class="img-fluid mb-3" style="max-height: 300px; object-fit: cover;">
+                  <img src="assets/<?= htmlspecialchars($row['Image']); ?>" class="img-fluid mb-3" style="aspect-ratio: 1/1; max-height: 300px; object-fit: cover;">
                 <?php endif; ?>
                 <h4><?= htmlspecialchars($row['Title']); ?></h4>
                 <p class="text-muted">القسم: <?= htmlspecialchars($row['category_name']); ?> | الكاتب: <?= htmlspecialchars($row['author_name']); ?></p>

@@ -126,7 +126,7 @@ $result = $conn->query($sql);
         <div class="col-md-6 mb-4">
           <div class="card shadow-sm">
             <?php if (!empty($row['image'])): ?>
-              <img src="uploads/<?= htmlspecialchars($row['image']); ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
+              <img src="assets/<?= htmlspecialchars($row['image']); ?>" class="card-img-top" style="aspect-ratio: 1/1; object-fit:fill;">
             <?php endif; ?>
             <div class="card-body">
               <h5 class="card-title"><?= htmlspecialchars($row['title']); ?></h5>

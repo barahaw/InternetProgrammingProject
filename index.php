@@ -79,7 +79,7 @@
                     html += `
                     <div class="col-md-4">
                         <div class="card bg-dark text-white">
-                            <a href="details.php?id=${newsArr[0].id}"><img src="assets/${newsArr[0].image}" class="card-img-top" alt="${newsArr[0].title}"></a>
+                            <a href="details.php?id=${newsArr[0].id}"><img src="assets/${newsArr[0].image}" class="card-img-top" alt="${newsArr[0].title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h6 class="card-title text-secondary">${newsArr[0].category || ''}</h6>
                                 <a href="details.php?id=${newsArr[0].id}" class="text-white text-decoration-none"><h5>${newsArr[0].title || ''}</h5></a>
@@ -95,7 +95,7 @@
                     if (newsArr[i]) {
                         html += `
                         <div class="card mb-3 border-0">
-                            <a href="details.php?id=${newsArr[i].id}"><img src="assets/${newsArr[i].image}" class="card-img-top" alt="${newsArr[i].title}"></a>
+                            <a href="details.php?id=${newsArr[i].id}"><img src="assets/${newsArr[i].image}" class="card-img-top" alt="${newsArr[i].title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h6 class="card-title text-secondary-emphasis">${newsArr[i].category || ''}</h6>
                                 <a href="details.php?id=${newsArr[i].id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark">${newsArr[i].title || ''}</p></a>
@@ -110,7 +110,7 @@
                     if (newsArr[i]) {
                         html += `
                         <div class="card mb-3 border-0">
-                            <a href="details.php?id=${newsArr[i].id}"><img src="assets/${newsArr[i].image}" class="card-img-top" alt="${newsArr[i].title}"></a>
+                            <a href="details.php?id=${newsArr[i].id}"><img src="assets/${newsArr[i].image}" class="card-img-top" alt="${newsArr[i].title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h5 class="card-title">${newsArr[i].category || ''}</h5>
                                 <a href="details.php?id=${newsArr[i].id}" class="text-dark text-decoration-none"><p class="card-text">${newsArr[i].title || ''}</p></a>
@@ -152,7 +152,7 @@
                                         return `
                                         <div class="col-md-6 col-lg-4">
                                             <div class="card border-0 h-100 d-flex flex-column">
-                                                <a href="details.php?id=${news.id}"><img src="assets/${news.image || 'more1.png'}" class="card-img-top" alt="News Image"></a>
+                                                <a href="details.php?id=${news.id}"><img src="assets/${news.image || 'more1.png'}" class="card-img-top" alt="News Image" style="aspect-ratio:16/14;object-fit:cover;"></a>
                                                 <div class="card-body">
                                                     <span class="text-secondary">${news.category || ''}</span>
                                                     <h6 class="card-title">
@@ -174,7 +174,7 @@
                                                     </h6>
                                                     <p class="card-text text-secondary">${news.excerpt || ''}</p>
                                                 </div>
-                                                <a href="details.php?id=${news.id}" class="order-2 mt-1"><img src="assets/${news.image || 'more1.png'}" class="card-img-top" alt="News Image"></a>
+                                                <a href="details.php?id=${news.id}" class="order-2 mt-1"><img src="assets/${news.image || 'more1.png'}" class="card-img-top" alt="News Image" style="aspect-ratio:16/14;object-fit:cover;"></a>
                                             </div>
                                         </div>
                                         `;
@@ -263,7 +263,7 @@
                 let mainCard = data.main ? `
                     <div class="col-md-6">
                         <div class="card border-0 h-100">
-                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="height:220px;object-fit:cover;"></a>
+                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h6 class="card-title mt-2">${data.main.category}</h6>
                                 <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -280,7 +280,7 @@
                             const card = data.side[j];
                             sideCards += `
         <div class="card border-0 mb-2 p-1" style="font-size:0.92rem;">
-            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="height:90px;object-fit:cover;"></a>
+            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
             <div class="card-body p-2">
                 <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${card.category || ''}</h6>
                 <a href="details.php?id=${card.id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark mb-1" style="font-size:0.98rem;">${card.title || ''}</p></a>
@@ -328,7 +328,7 @@
             function loadEconomicNewsSection() {
                 fetch('section_news.php?category=اقتصاد&full=1')
                     .then(res => res.json())
-                    .then(data => {
+                    .then data => {
                         document.getElementById('economic-news-section').innerHTML = renderEconomicNewsSection(data);
                     });
             }
@@ -342,7 +342,7 @@
                 let mainCard = data.main ? `
                     <div class="col-md-6 gy-3">
                         <div class="card border-0 h-100">
-                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="height:300px;object-fit:cover;"></a>
+                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h6 class="card-title">${data.main.category}</h6>
                                 <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -359,7 +359,7 @@
                             const card = data.side[j];
                             sideCards += `
         <div class="card border-0 mb-2 p-1" style="font-size:0.92rem;">
-            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="height:150px;object-fit:cover;"></a>
+            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
             <div class="card-body p-2">
                 <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${card.category || ''}</h6>
                 <a href="details.php?id=${card.id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark mb-1" style="font-size:0.98rem;">${card.title || ''}</p></a>
@@ -405,7 +405,7 @@
                 let mainCard = data.main ? `
                     <div class="col-md-6">
                         <div class="card border-0 h-100">
-                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="height:220px;object-fit:cover;"></a>
+                            <a href="details.php?id=${data.main.id}"><img src="assets/${data.main.image}" class="card-img-top" alt="${data.main.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
                             <div class="card-body">
                                 <h5 class="card-title px-2">${data.main.category}</h5>
                                 <a href="details.php?id=${data.main.id}" class="text-decoration-none text-dark"><strong>${data.main.title}</strong></a>
@@ -422,7 +422,7 @@
                             const card = data.side[j];
                             sideCards += `
         <div class="card border-0 mb-2 p-1" style="font-size:0.92rem;">
-            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="height:90px;object-fit:cover;"></a>
+            <a href="details.php?id=${card.id}"><img src="assets/${card.image}" class="card-img-top" alt="${card.title}" style="aspect-ratio:16/14;object-fit:cover;"></a>
             <div class="card-body p-2">
                 <h6 class="card-title text-secondary-emphasis mb-1" style="font-size:0.95rem;">${card.category || ''}</h6>
                 <a href="details.php?id=${card.id}" class="text-dark text-decoration-none"><p class="card-text font-weight-bold text-dark mb-1" style="font-size:0.98rem;">${card.title || ''}</p></a>
@@ -513,6 +513,7 @@
         </div>
     </footer>
 
+    <script src="JS/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

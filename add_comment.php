@@ -2,8 +2,8 @@
 require_once 'config.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $news_id = intval($_POST['news_id']);
-    $username = trim($_POST['username']);
-    $content = trim($_POST['content']);
+    $username = htmlspecialchars(trim($_POST['username']), ENT_QUOTES, 'UTF-8');
+    $content = htmlspecialchars(trim($_POST['content']), ENT_QUOTES, 'UTF-8');
     if ($news_id > 0 && $username && $content) {
         $stmt = $conn->prepare("INSERT INTO comments (news_id, user_name, comment, created_at) VALUES (?, ?, ?, NOW())");
         if ($stmt) {

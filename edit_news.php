@@ -118,15 +118,7 @@ $categories = $conn->query("SELECT * FROM category_table");
   </div>
 </div>
 
+<script src="main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  const alerts = document.querySelectorAll('.alert');
-  alerts.forEach(alert => {
-    setTimeout(() => {
-      const bsAlert = new bootstrap.Alert(alert);
-      bsAlert.close();
-    }, 10000); 
-  });
-</script>
 </body>
 </html>
