@@ -2,7 +2,6 @@ function renderCategoryContent(newsArr) {
   if (!Array.isArray(newsArr) || newsArr.length === 0) {
     return '<div class="alert alert-info">لا توجد أخبار في هذا القسم حالياً.</div>';
   }
-  // Normalize id property for all news items (for API compatibility)
   newsArr = newsArr.map((item) => {
     let id = item.id !== undefined ? item.id : item.Id;
     return { ...item, id };
