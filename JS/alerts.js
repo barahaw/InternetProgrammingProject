@@ -1,4 +1,3 @@
-// ...existing code from assets/alerts.js...
 window.addEventListener("DOMContentLoaded", function () {
   const alerts = document.querySelectorAll(".alert");
   alerts.forEach((alert) => {

@@ -2,17 +2,28 @@ function renderCategoryContent(newsArr) {
   if (!Array.isArray(newsArr) || newsArr.length === 0) {
     return '<div class="alert alert-info">لا توجد أخبار في هذا القسم حالياً.</div>';
   }
+  // Normalize id property for all news items (for API compatibility)
+  newsArr = newsArr.map((item) => {
+    let id = item.id !== undefined ? item.id : item.Id;
+    return { ...item, id };
+  });
   let mainHtml = "";
   if (newsArr[0]) {
     mainHtml += `
             <div class="col-lg-8">
                 <div class="card border-0">
-                    <img class="card-img-top" src="assets/${
-                      newsArr[0].Image
-                    }" alt="${newsArr[0].Title}">
+                    <a href="details.php?id=${
+                      newsArr[0].id
+                    }"><img class="card-img-top" src="assets/${
+      newsArr[0].Image
+    }" alt="${newsArr[0].Title}"></a>
                     <div class="card-body">
                         <h6 class="text-muted">${newsArr[0].category || ""}</h6>
-                        <h5 class="fw-bold">${newsArr[0].Title}</h5>
+                        <a href="details.php?id=${
+                          newsArr[0].id
+                        }" class="text-decoration-none text-dark"><h5 class="fw-bold">${
+      newsArr[0].Title
+    }</h5></a>
                         <p class="text-secondary">${
                           newsArr[0].excerpt || ""
                         }</p>
@@ -23,14 +34,20 @@ function renderCategoryContent(newsArr) {
       if (newsArr[i]) {
         mainHtml += `
                     <div class="mb-4 d-flex align-items-start gap-3">
-                        <img src="assets/${
-                          newsArr[i].Image
-                        }" class="img-fluid" style="width: 150px; height: auto;">
+                        <a href="details.php?id=${
+                          newsArr[i].id
+                        }"><img src="assets/${
+          newsArr[i].Image
+        }" class="img-fluid" style="width: 150px; height: auto;"></a>
                         <div style="max-width: 500px;">
                             <h6 class="fw-bold mb-1 text-muted">${
                               newsArr[i].category || ""
                             }</h6>
-                            <h5 class="fw-bold mb-2">${newsArr[i].Title}</h5>
+                            <a href="details.php?id=${
+                              newsArr[i].id
+                            }" class="text-decoration-none text-dark"><h5 class="fw-bold mb-2">${
+          newsArr[i].Title
+        }</h5></a>
                             <p class="text-secondary mb-0">${
                               newsArr[i].excerpt || ""
                             }</p>
@@ -45,12 +62,18 @@ function renderCategoryContent(newsArr) {
   if (newsArr[0]) {
     rightHtml += `
             <div class="card border-0 mb-3">
-                <img class="card-img-top" src="assets/${
-                  newsArr[0].Image
-                }" alt="${newsArr[0].Title}">
+                <a href="details.php?id=${
+                  newsArr[0].id
+                }"><img class="card-img-top" src="assets/${
+      newsArr[0].Image
+    }" alt="${newsArr[0].Title}"></a>
                 <div class="card-body">
                     <h6 class="text-muted">${newsArr[0].category || ""}</h6>
-                    <h5 class="fw-bold">${newsArr[0].Title}</h5>
+                    <a href="details.php?id=${
+                      newsArr[0].id
+                    }" class="text-decoration-none text-dark"><h5 class="fw-bold">${
+      newsArr[0].Title
+    }</h5></a>
                     <p class="text-muted">${newsArr[0].excerpt || ""}</p>
                 </div>
             </div>
@@ -61,16 +84,22 @@ function renderCategoryContent(newsArr) {
             <div class="card mb-3 border-0">
                 <div class="row g-0">
                     <div class="col-4">
-                        <img src="assets/${
-                          newsArr[i].Image
-                        }" class="img-fluid rounded-start" alt="news-feed">
+                        <a href="details.php?id=${
+                          newsArr[i].id
+                        }"><img src="assets/${
+      newsArr[i].Image
+    }" class="img-fluid rounded-start" alt="news-feed"></a>
                     </div>
                     <div class="col-8">
                         <div class="card-body">
                             <p class="text-muted mb-1">${
                               newsArr[i].category || ""
                             }</p>
-                            <h6 class="card-title">${newsArr[i].Title}</h6>
+                            <a href="details.php?id=${
+                              newsArr[i].id
+                            }" class="text-decoration-none text-dark"><h6 class="card-title">${
+      newsArr[i].Title
+    }</h6></a>
                         </div>
                     </div>
                 </div>
