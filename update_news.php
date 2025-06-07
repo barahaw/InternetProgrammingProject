@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($_FILES['image']['name'])) {
         $image_name = time() . '_' . basename($_FILES["image"]["name"]);
-        $target_dir = "uploads/";
+        $target_dir = "assets/";
         $target_file = $target_dir . $image_name;
 
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {

@@ -4,8 +4,12 @@ require_once 'config.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$result = $conn->query("SELECT * FROM news_table WHERE id = $id");
+$stmt = $conn->prepare("SELECT * FROM news_table WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
 $news = $result->fetch_assoc();
+
 
 $categories = $conn->query("SELECT * FROM category_table");
 ?>
@@ -69,7 +73,7 @@ $categories = $conn->query("SELECT * FROM category_table");
         <div class="mb-3">
           <label class="form-label">الصورة (اختياري)</label><br>
           <?php if (!empty($news['image'])): ?>
-            <img src="uploads/<?= htmlspecialchars($news['image']); ?>" width="150" class="mb-2"><br>
+            <img src="assets/<?= htmlspecialchars($news['image']); ?>" width="150" class="mb-2"><br>
           <?php endif; ?>
           <input type="file" name="image" class="form-control">
         </div>

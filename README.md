@@ -1,55 +1,66 @@
-# Programming Internet Project
+# 📰 Internet Programming Project
 
-## وصف المشروع
+## 📌 Project Overview
 
-مشروع ويب إخباري متكامل يهدف إلى توفير منصة إلكترونية لعرض الأخبار وتغطية الأحداث الجارية في عدة مجالات (سياسة، اقتصاد، رياضة، صحة، وغيرها). يتيح الموقع للمستخدمين والزوار تصفح الأخبار، البحث عنها، قراءة التفاصيل، والتفاعل من خلال التعليقات.
+A web-based news platform for publishing and browsing news across various categories such as politics, economy, sports, and health. Users can search for news, view details, and leave comments.
 
-### المميزات الرئيسية:
+---
 
-- **تصفح الأخبار حسب الأقسام:** يمكن للمستخدمين استعراض الأخبار حسب القسم أو الفئة.
-- **نظام بحث متقدم:** البحث عن الأخبار باستخدام الكلمات المفتاحية أو العناوين.
-- **عرض تفاصيل الخبر:** صفحة مخصصة لكل خبر تعرض التفاصيل، الصورة، التعليقات، والأخبار ذات الصلة.
-- **نظام تعليقات:** يمكن للزوار إضافة تعليقات على الأخبار.
-- **لوحات تحكم مخصصة:**
-  - **لوحة المدير (Admin):** إدارة المستخدمين، الإعلانات، ومراجعة كل المحتوى.
-  - **لوحة المحرر (Editor):** مراجعة الأخبار المقدمة من الكتّاب والموافقة أو الرفض.
-  - **لوحة الكاتب (Author):** إضافة وتحرير الأخبار الخاصة به ومتابعة حالة الموافقة.
-- **إدارة الإعلانات:** إضافة وتعديل وحذف الإعلانات التي تظهر في الموقع.
-- **إعلانات عشوائية ديناميكية:** يتم عرض إعلان عشوائي في كل زيارة للصفحة باستخدام قاعدة بيانات الإعلانات.
-- **نظام صلاحيات:** لكل مستخدم دور وصلاحيات محددة (مدير، محرر، كاتب).
-- **واجهة مستخدم حديثة:** تعتمد على Bootstrap وBootstrap Icons لتوفير تجربة استخدام سهلة وجذابة.
+## 🎯 Key Features
 
-### التقنيات المستخدمة:
+- Browse news by category
+- Search news by keywords or titles
+- News details page with image, text, comments, and related articles
+- Comment system for visitors
+- Role-based dashboards:
 
-- **البرمجة الخلفية:** PHP
-- **قاعدة البيانات:** MySQL
-- **الواجهة الأمامية:** HTML, CSS, JavaScript, Bootstrap
-- **إدارة الجلسات:** للتحكم في صلاحيات المستخدمين وتسجيل الدخول
+  - **Admin:** Manage users, ads, and content
+  - **Editor:** Review and approve/reject submitted news
+  - **Author:** Add/edit their own news and track status
 
-### ملفات رئيسية:
+- Random ad display from the database
+- Responsive UI using Bootstrap
 
-- `index.php`: الصفحة الرئيسية للموقع.
-- `catogry.php`: عرض الأخبار حسب القسم.
-- `details.php`: عرض تفاصيل خبر معين والتعليقات.
-- `admin_dash.php`: لوحة تحكم المدير.
-- `editor_dash.php`: لوحة تحكم المحرر.
-- `author_dash.php`: لوحة تحكم الكاتب.
-- `add_news.php`, `edit_news.php`: إضافة وتعديل الأخبار.
-- `add_user.php`, `edit_user.php`, `delete_user.php`: إدارة المستخدمين.
-- `most_read.php`, `most_commented.php`: جلب الأخبار الأكثر قراءة أو الأكثر تعليقا.
-- `comments.php`: جلب وعرض التعليقات.
-- `config.php`: إعدادات الاتصال بقاعدة البيانات.
+---
 
-### كيفية التشغيل:
+## 🛠️ Technologies Used
 
-1. تأكد من وجود XAMPP أو أي سيرفر محلي يدعم PHP وMySQL.
-2. ضع ملفات المشروع داخل مجلد `htdocs`.
-3. أنشئ قاعدة بيانات MySQL وحدث بيانات الاتصال في `config.php`.
-4. استورد الجداول المطلوبة (يفضل وجود ملف SQL مرفق).
-5. افتح المتصفح وادخل على `http://localhost/InternetProgrammingProject/index.php`.
+- **Backend:** PHP
+- **Database:** MySQL
+- **Frontend:** HTML, CSS, JavaScript, Bootstrap
 
-- تم تأمين جميع استعلامات قاعدة البيانات باستخدام الاستعلامات المجهزة (Prepared Statements) للحماية من هجمات SQL Injection.
-- تم حماية جميع صفحات العرض من هجمات XSS (Cross Site Scripting) باستخدام دالة `htmlspecialchars` عند عرض أي مدخلات مستخدم.
-- تحقق من صحة جميع البيانات المدخلة من المستخدمين.
+---
 
-> الموقع الآن محمي من أشهر الثغرات الأمنية (SQL Injection وXSS) في جميع العمليات الأساسية.
+## 📁 Main Files
+
+| File                                               | Purpose                   |
+| -------------------------------------------------- | ------------------------- |
+| `index.php`                                        | Homepage                  |
+| `catogry.php`                                      | News by category          |
+| `details.php`                                      | News details and comments |
+| `admin_dash.php`                                   | Admin dashboard           |
+| `editor_dash.php`                                  | Editor dashboard          |
+| `author_dash.php`                                  | Author dashboard          |
+| `add_news.php`, `edit_news.php`                    | Add/edit news             |
+| `add_user.php`, `edit_user.php`, `delete_user.php` | User management           |
+| `comments.php`                                     | Display comments          |
+| `config.php`                                       | Database connection       |
+
+---
+
+## ▶️ How to Run
+
+1. Install XAMPP or any local server with PHP & MySQL
+2. Place project files in the `htdocs` folder
+3. Create a MySQL database and update credentials in `config.php`
+4. Import the provided SQL database
+5. Open your browser and visit:
+   `http://localhost/InternetProgrammingProject/index.php`
+
+---
+
+## 🔐 Security Notes
+
+- All queries use **prepared statements** to prevent SQL Injection
+- User input is sanitized using `htmlspecialchars` to prevent XSS
+- All forms validate input data before processing

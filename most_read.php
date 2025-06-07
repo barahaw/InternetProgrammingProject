@@ -8,24 +8,6 @@ while ($row = $result->fetch_assoc()) {
     $list[] = $row;
 }
 
-$cards = [];
-$result = $conn->query("SELECT id, title, image, category_id, LEFT(body, 120) as excerpt FROM news_table ORDER BY views DESC LIMIT 5,2");
-while ($row = $result->fetch_assoc()) {
-    $catRes = $conn->query("SELECT name FROM category_table WHERE id=" . intval($row['category_id']));
-    $cat = $catRes && $catRes->num_rows ? $catRes->fetch_assoc()['name'] : '';
-    $row['category'] = $cat;
-    $cards[] = $row;
-}
-
-$extraCards = [];
-$result = $conn->query("SELECT id, title, image, category_id, LEFT(body, 120) as excerpt FROM news_table ORDER BY views DESC LIMIT 7,2");
-while ($row = $result->fetch_assoc()) {
-    $catRes = $conn->query("SELECT name FROM category_table WHERE id=" . intval($row['category_id']));
-    $cat = $catRes && $catRes->num_rows ? $catRes->fetch_assoc()['name'] : '';
-    $row['category'] = $cat;
-    $extraCards[] = $row;
-}
-
 $moreNews = [];
 $result = $conn->query("SELECT id, title, image, category_id, LEFT(body, 120) as excerpt FROM news_table ORDER BY RAND() LIMIT 3");
 while ($row = $result->fetch_assoc()) {
@@ -37,7 +19,5 @@ while ($row = $result->fetch_assoc()) {
 
 echo json_encode([
     'list' => $list,
-    'cards' => $cards,
-    'extraCards' => $extraCards,
     'moreNews' => $moreNews
 ], JSON_UNESCAPED_UNICODE);

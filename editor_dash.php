@@ -1,7 +1,10 @@
 <?php
 session_start();
 require_once 'config.php';
-
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'editor') {
+    header("Location: login.php");
+    exit;
+}
 
 $sql = "SELECT news_table.Id, news_table.Title, news_table.Date_Posted, news_table.Status,
                news_table.Image, news_table.Body, category_table.name AS category_name, user_table.name AS author_name

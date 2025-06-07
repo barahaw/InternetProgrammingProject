@@ -2,7 +2,10 @@
 session_start();
 require_once 'config.php';
 
-
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'author') {
+    header("Location: login.php");
+    exit;
+}
 
 $author_id = isset($_SESSION['author_id']) ? $_SESSION['author_id'] : 0;
 
