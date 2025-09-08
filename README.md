@@ -45,6 +45,31 @@ A web-based news platform for publishing and browsing news across various catego
 | `add_user.php`, `edit_user.php`, `delete_user.php` | User management           |
 | `comments.php`                                     | Display comments          |
 | `config.php`                                       | Database connection       |
+| **API Files**                                      |                           |
+| `search_api.php`                                   | Search news API           |
+| `category_api.php`                                 | Category news API         |
+| `details_api.php`                                  | News details API          |
+| `agent_api.php`                                    | User/agent API            |
+
+---
+
+## 🔌 API Endpoints
+
+The platform provides several REST API endpoints for programmatic access:
+
+### Agent API
+- **Get all agents:** `GET /agent_api.php`
+- **Get agents by role:** `GET /agent_api.php?role=admin|editor|author`
+- **Get specific agent:** `GET /agent_api.php?action=get&id={id}`
+
+### News APIs
+- **Search news:** `GET /search_api.php?q={query}`
+- **Get news by category:** `GET /category_api.php?category={category}`
+- **Get news details:** `GET /details_api.php?id={id}`
+
+📖 **API Documentation:** See `AGENT_API.md` for detailed agent API documentation and examples.
+
+🧪 **API Testing:** Open `agent_api_test.html` in your browser to test the agent API endpoints.
 
 ---
 

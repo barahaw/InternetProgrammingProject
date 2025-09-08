@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .result { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 3px; }
+        button { background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 3px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agent API Test Page</h1>
+        <p>This page demonstrates how to use the Agent API endpoints.</p>
+
+        <div class="test-section">
+            <h3>Get All Agents</h3>
+            <button onclick="getAllAgents()">Test GET /agent_api.php</button>
+            <div id="all-agents-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Get Agents by Role</h3>
+            <button onclick="getAgentsByRole('admin')">Get Admins</button>
+            <button onclick="getAgentsByRole('editor')">Get Editors</button>
+            <button onclick="getAgentsByRole('author')">Get Authors</button>
+            <div id="role-agents-result" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Get Specific Agent</h3>
+            <input type="number" id="agent-id" placeholder="Enter Agent ID" value="1">
+            <button onclick="getSpecificAgent()">Get Agent</button>
+            <div id="specific-agent-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function getAllAgents() {
+            const resultDiv = document.getElementById('all-agents-result');
+            resultDiv.innerHTML = 'Loading...';
+            
+            fetch('agent_api.php')
+                .then(response => response.json())
+                .then(data => {
+                    resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                    resultDiv.className = 'result success';
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                    resultDiv.className = 'result error';
+                });
+        }
+
+        function getAgentsByRole(role) {
+            const resultDiv = document.getElementById('role-agents-result');
+            resultDiv.innerHTML = `Loading ${role}s...`;
+            
+            fetch(`agent_api.php?role=${role}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultDiv.innerHTML = `<strong>${role.toUpperCase()}S:</strong><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                    resultDiv.className = 'result success';
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                    resultDiv.className = 'result error';
+                });
+        }
+
+        function getSpecificAgent() {
+            const agentId = document.getElementById('agent-id').value;
+            const resultDiv = document.getElementById('specific-agent-result');
+            
+            if (!agentId) {
+                resultDiv.innerHTML = 'Please enter an Agent ID';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            resultDiv.innerHTML = `Loading agent ${agentId}...`;
+            
+            fetch(`agent_api.php?action=get&id=${agentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultDiv.innerHTML = `<strong>AGENT ${agentId}:</strong><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                    resultDiv.className = 'result success';
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                    resultDiv.className = 'result error';
+                });
+        }
+    </script>
+</body>
+</html>
