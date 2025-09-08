@@ -77,10 +77,20 @@ The platform provides several REST API endpoints for programmatic access:
 
 1. Install XAMPP or any local server with PHP & MySQL
 2. Place project files in the `htdocs` folder
-3. Create a MySQL database and update credentials in `config.php`
-4. Import the provided SQL database
+3. **Set up database configuration:**
+   - Copy `config.php.template` to `config.php`
+   - Update the database credentials in `config.php` with your MySQL settings
+4. Create a MySQL database and import the provided SQL database
 5. Open your browser and visit:
    `http://localhost/InternetProgrammingProject/index.php`
+
+### Database Configuration
+```php
+$servername = "localhost";        // Your database server
+$username = "root";               // Your database username  
+$password = "";                   // Your database password
+$dbname = "news_db";             // Your database name
+```
 
 ---
 
